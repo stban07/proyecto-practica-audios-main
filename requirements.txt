@@ -1,0 +1,5 @@
+pillow
+django-admin-interface
+django-crispy-forms
+SpeechRecognition
+pyAudio
