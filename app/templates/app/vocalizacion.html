@@ -37,12 +37,12 @@
             </div>
             <div class="controlador">
                 <!-- <button id="start_stop" class="start-stop" >START</button> -->
-                <form method="POST" id="post-form">
-                    {% csrf_token %}
+                <form method="POST" id="post-form" >
+                    {% csrf_token %} 
                     <div id="tiempo" >
                         <h3>La grabacion terminara automaticamente en 5 segundos</h3>
                     </div>
-                    <button type="submit" id="start_stop" class="start-stop" onclick="MostrarTiempo()">START</button>
+                    <button type="submit" id="start_stop" class="start-stop" onclick="MostrarTiempo()" >START</button>
                 </form>
                 <div class="measures">
                     <div class="subtract-beats stepper">-</div>
@@ -85,14 +85,14 @@
 
 
 <script>
-    function MostrarTiempo() {
+     function MostrarTiempo() {
         document.getElementById('tiempo').style.display = 'block';
         document.getElementById('start_stop').style.display = 'none';
         start_stop
         console.log("Hola muindoooooooooooooooo");
-    }
+    } 
 </script>
-<script src="{% static 'app/js/microfono.js' %}"></script>
+<script src="{% static 'app/js/microfono.js' %}"></script> 
 <script src="{% static 'app/js/metronomo.js' %}"></script>
 <script src="{% static 'app/js/jquery.min.js' %}"></script>
 <script src="{% static 'app/js/jquery.dropotron.min.js' %}"></script>

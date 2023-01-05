@@ -139,6 +139,7 @@ function validateTempo() {
 
 function playClick() {
     console.log(count);
+    console.log("wwwwwwww");
     if (count === beatsPerMeasure) {
         count = 0;
     }

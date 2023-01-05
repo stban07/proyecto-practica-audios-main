@@ -10,25 +10,25 @@ class DBHelper:
             host='localhost',
             user='root',
             password="",
-            database="mauricio_bd",
+            database='jostin_db',
             port=3306
         )
 
-    bdName = 'mauricio_bd'
+    bdName = 'jostin_bd'
 
 
 # se insertan los datos a la tabla Estado_animo
 
     def insert_metronomo(self, usuario_id, audio):
         cursor = self.mydb.cursor()
-        query = "INSERT INTO mauricio_bd.app_vocalizacion(usuario_id, audio) VALUES (%s, %s)"
+        query = "INSERT INTO app_vocalizacion(usuario_id, audio) VALUES (%s, %s)"
         valores = (str(usuario_id), audio)
         cursor.execute(query, valores)
         self.mydb.commit()
 
     def update_audio(self, url_audio):
         cursor = self.mydb.cursor()
-        query = "UPDATE mauricio_bd.app_vocalizacion SET audio = SUBSTRING(%s, 16) WHERE audio = %s"
+        query = "UPDATE app_vocalizacion SET audio = SUBSTRING(%s, 16) WHERE audio = %s"
         valores = (url_audio, url_audio)
         cursor.execute(query, valores)
         self.mydb.commit()

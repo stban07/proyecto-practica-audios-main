@@ -91,7 +91,7 @@ DATABASES = {
         'OPTIONS': {
             'sql_mode': 'traditional',
         },
-        'NAME': 'mauricio_bd',
+        'NAME': 'jostin_db',
         'USER': 'root',
         'PASSWORD': '',
         'HOST': 'localhost',
