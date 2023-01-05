@@ -21,11 +21,11 @@ class Audio:
 
     def grabarAudio(self, id_usuario):
         # Crear token
-        print("111")
-
-
-        print(contador)
+        
         token = get_random_string(length=6)
+        print("token")
+        print(contador)
+        
         print("2222")
         print(id_usuario)
         print('Estoy en audio.py')
