@@ -1,6 +1,6 @@
 
 
-//TIMER
+//TIMER AQUI ESTA LA LOGICA DEL CONTADOR
 
 class Timer {
     constructor(callback, timeInterval, options) {
@@ -18,13 +18,13 @@ class Timer {
             }
 
             this.timeout = setTimeout(this.round, this.timeInterval);
-            console.log('Timer Started');
+            console.log('Timer Startedlll');
         };
         // Add method to stop timer
         this.stop = () => {
 
             clearTimeout(this.timeout);
-            console.log('Timer Stopped');
+            console.log('Timer Stoppedooo');
         };
         // Round method that takes care of running the callback and adjusting the time
         this.round = () => {
@@ -48,11 +48,27 @@ class Timer {
         };
     }
 }
+//-------------------------------------------------------------
 
 
 
 
 
+//SONIDOS DEL METRONOMO
+const click1 = new Audio('/static/app/recursos/sonidos-metronomo/click1.mp3');
+const click2 = new Audio('/static/app/recursos/sonidos-metronomo/click2.mp3');
+
+
+
+
+//CONFIGURACIONES DEL METRONOMO
+let bpm = 140;
+let beatsPerMeasure = 4;
+let count = 0;
+let isRunning = false;
+let tempoTextString = 'Medium';
+
+//DECLARACION DE VARIBLE CON SU SELECTOR HTML
 const tempoDisplay = document.querySelector('.tempo');
 const tempoText = document.querySelector('.tempo-text');
 const decreaseTempoBtn = document.querySelector('.decrease-tempo');
@@ -63,14 +79,7 @@ const subtractBeats = document.querySelector('.subtract-beats');
 const addBeats = document.querySelector('.add-beats');
 const measureCount = document.querySelector('.measure-count');
 
-const click1 = new Audio('/static/app/recursos/sonidos-metronomo/click1.mp3');
-const click2 = new Audio('/static/app/recursos/sonidos-metronomo/click2.mp3');
-
-let bpm = 140;
-let beatsPerMeasure = 4;
-let count = 0;
-let isRunning = false;
-let tempoTextString = 'Medium';
+//EVENTOS CLICK DE LAS VARIABLE DECLARADAS  HTML VOCALIZACION
 
 decreaseTempoBtn.addEventListener('click', () => {
     if (bpm <= 20) { return };
@@ -78,12 +87,14 @@ decreaseTempoBtn.addEventListener('click', () => {
     validateTempo();
     updateMetronome();
 });
+
 increaseTempoBtn.addEventListener('click', () => {
     if (bpm >= 280) { return };
     bpm++;
     validateTempo();
     updateMetronome();
 });
+
 tempoSlider.addEventListener('input', () => {
     bpm = tempoSlider.value;
     validateTempo();
@@ -96,12 +107,14 @@ subtractBeats.addEventListener('click', () => {
     measureCount.textContent = beatsPerMeasure;
     count = 0;
 });
+
 addBeats.addEventListener('click', () => {
     if (beatsPerMeasure >= 12) { return };
     beatsPerMeasure++;
     measureCount.textContent = beatsPerMeasure;
     count = 0;
 });
+
 
 startStopBtn.addEventListener('click', () => {
     count = 0;
@@ -116,6 +129,12 @@ startStopBtn.addEventListener('click', () => {
     }
 });
 
+
+
+
+
+
+//FUNCIONES DEL METRONOMO
 function updateMetronome() {
     tempoDisplay.textContent = bpm;
     tempoSlider.value = bpm;
@@ -139,16 +158,20 @@ function validateTempo() {
 
 function playClick() {
     console.log(count);
-    console.log("wwwwwwww");
+
+    console.log("PLAY CLICK METRONOMO");
     if (count === beatsPerMeasure) {
         count = 0;
+        console.log("3");
     }
     if (count === 0) {
         click1.play();
         click1.currentTime = 0;
+        console.log("!");
     } else {
         click2.play();
         click2.currentTime = 0;
+        console.log("2");
     }
     count++;
     //document.getElementById('total_beats').value = beatsPerMeasure

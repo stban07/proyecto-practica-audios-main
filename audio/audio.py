@@ -1,7 +1,3 @@
-import pyaudio
-import wave
-from pydub.playback import play
-from pydub import AudioSegment
 from audio.dbherlper import DBHelper
 from django.utils.crypto import get_random_string
 from os import system
@@ -9,12 +5,12 @@ from os import system
 
 db = DBHelper()
 
-contador = 1
-FORMAT = pyaudio.paInt16  # formato de los samples
-CHANNELS = 1  # Numero de canales
-RATE = 44100                    #
-CHUNK = 1024
-duracion = 5
+# contador = 1
+# FORMAT = pyaudio.paInt16  # formato de los samples
+# CHANNELS = 1  # Numero de canales
+# RATE = 44100                    #
+# CHUNK = 1024
+# duracion = 5
 
 
 class Audio:
@@ -24,10 +20,8 @@ class Audio:
         
         token = get_random_string(length=6)
         print("token")
-        print(contador)
-        
-        print("2222")
-        print(id_usuario)
+        # print("2222")
+        # print(id_usuario)
         print('Estoy en audio.py')
         # # Definicion de parametros
         # FORMAT = pyaudio.paInt16  # formato de los samples
@@ -38,47 +32,64 @@ class Audio:
         global archivo
         print('global archivo')
         # f"archivos_media/voz/grabacion{token}.wav"
-        archivo = 'AudioPrueba2.wav';
+        archivo = f'Audio{token}.wav';
         # iniciamos "pyaudio"
-        global audio
-        audio = pyaudio.PyAudio()
-        print(audio);
-        print('global audio');
+        # global audio
+        # audio = pyaudio.PyAudio()
+        # print(audio);
+        # print('global audio');
 
-        global stream
-        stream = audio.open(format=FORMAT, channels=CHANNELS,
-                            rate=RATE, input=True,
-                            frames_per_buffer=CHUNK);
+        # global stream
+        # stream = audio.open(format=FORMAT, channels=CHANNELS,
+        #                     rate=RATE, input=True,
+        #                     frames_per_buffer=CHUNK);
         
-        print(stream);
-        print('stream');
+        # print(stream);
+        # print('stream');
 
         # INICIO DE GRABACION
 
-        print("grabando....");
-        global frames
-        frames = []
+        
+        # global frames
+        # frames = []
 
-        for i in range(0, int(RATE/CHUNK*duracion)):
-            data = stream.read(CHUNK)
-            frames.append(data)
+        # for i in range(0, int(RATE/CHUNK*duracion)):
+        #     data = stream.read(CHUNK)
+        #     frames.append(data)
 
         # detenemos grabacion
-        stream.stop_stream()
-        stream.close()
-        audio.terminate()
-        print("grabacion terminada")
+        # stream.stop_stream()
+        # stream.close()
+        # audio.terminate()
+        
+#         print("grabando....")
+#         global recorder
+#         recorder = AudioSegment
+#         print("paso1")
+        
+        
+# # Grabar durante 5 segundos
+#         recorder.stop(wait=True, timeout=5)
+#         print("paso2")
+# # Obtener el archivo de audio grabado
+#         audio = recorder.get_audio()
+
+# # Guardar el archivo de audio grabado en formato MP3
+#         audio.export(archivo, format="mp3")
+        
+           
+#         print("grabacion terminada")
         
         
         
          #creamos/guaramos el archivo de audio
          
-        waveFile = wave.open(archivo, 'wb')
-        waveFile.setnchannels(CHANNELS)
-        waveFile.setsampwidth(audio.get_sample_size(FORMAT))
-        waveFile.setframerate(RATE)
-        waveFile.writeframes(b''.join(frames))
-        waveFile.close()
+        #waveFile = wave.open(archivo, 'wb')
+        #waveFile.setnchannels(CHANNELS)
+        #waveFile.setsampwidth(audio.get_sample_size(FORMAT))
+        #waveFile.setframerate(RATE)
+        #waveFile.writeframes(b''.join(frames))
+        #waveFile.close()
         
         #print(waveFile)
         
@@ -117,19 +128,19 @@ class Audio:
         
         
         
-        with open(archivo, "rb") as file:
-        # Lee los datos del archivo
-            data = file.read()
-            print(data)
-            print("------------")
-        # Convierte los datos en un objeto binario
-        binary_data = bytes(data)
+        # with open(archivo, "rb") as file:
+        # # Lee los datos del archivo
+        #     data = file.read()
+        #     #print(data)
+        #     print("------------")
+        # # Convierte los datos en un objeto binario
+        # binary_data = bytes(data)
         #print(binary_data);
         
         
         
         
-        db.insert_metronomo(archivo,  data)  #
+        db.insert_metronomo(archivo,  id_usuario)  #
         # db.update_audio(archivo)
         
         

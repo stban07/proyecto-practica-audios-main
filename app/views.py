@@ -8,6 +8,7 @@ from audio.audio import Audio
 from django.views.generic import View
 from django.http import JsonResponse
 from django.shortcuts import redirect
+from django.views.decorators.csrf import csrf_exempt
 
 ############### INDEX #####################
 
@@ -88,6 +89,20 @@ def memorama(request):
     # return render(request, 'app/memorama.html')
 
 
+
+@csrf_exempt
+def save_audio(request, *args, **kwargs):
+    if request.method == 'POST':
+        print(" el post")
+        audio_file = request.body
+        print(audio_file)
+        audio = Audio()
+        audio.grabarAudio(audio_file)
+        return render(request, 'app/vocalizacion.html')
+
+
+
+
 ########################## VOCALIZACION ################################
 ############## CONFIGURAR CORRECTAMENTE PARA GUARDAR#####################
 class VocalizacionView(View):
@@ -97,7 +112,17 @@ class VocalizacionView(View):
         return render(request, 'app/vocalizacion.html')
 
     def post(self, request, *args, **kwargs):
-        print("hola estoy en el post")
-        audio = Audio()
-        audio.grabarAudio(str(request.user.id))
+        print(request)
+        # audio = Audio()
+        # audio.grabarAudio(str(request.user.id))
         return render(request, 'app/vocalizacion.html')
+    
+    # def save_audio(self, request, *args, **kwargs):
+    #     if request.method == 'POST':
+    #         print(" el post")
+    #         audio_file = request
+    #         print(audio_file)
+    #     return render(request, 'app/vocalizacion.html')
+    
+
+    

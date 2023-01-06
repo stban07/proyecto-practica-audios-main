@@ -37,12 +37,23 @@
             </div>
             <div class="controlador">
                 <!-- <button id="start_stop" class="start-stop" >START</button> -->
-                <form method="POST" id="post-form" >
+                {% comment %} <form method="POST" id="post-form"> {% endcomment %}
+                <button onclick="startRecording()" id="start_stop" class="start-stop">Iniciar grabación</button>
+                {% comment %} <button onclick="stopRecording()" id="stop">Detener grabación</button> {% endcomment %}
+                <audio id="audio" controls></audio>
+                {% comment %} <button type="submit" onclick="saveAudio()">GUARDAR grabación</button> {% endcomment %}
+                 {% comment %} </form>    {% endcomment %}
+
+
+
+                <form method="POST" id="post-form" enctype="multipart/form-data">
                     {% csrf_token %} 
+
                     <div id="tiempo" >
                         <h3>La grabacion terminara automaticamente en 5 segundos</h3>
                     </div>
-                    <button type="submit" id="start_stop" class="start-stop" onclick="MostrarTiempo()" >START</button>
+                    {% comment %} <button onclick="startRecording()" type="submit" id="start_stop" class="start-stop">Iniciar grabación</button>
+                    <button type="submit" id="start_stop" class="start-stop" onclick="MostrarTiempo()">STAhhhRT</button>  {% endcomment %}
                 </form>
                 <div class="measures">
                     <div class="subtract-beats stepper">-</div>
@@ -85,15 +96,128 @@
 
 
 <script>
-     function MostrarTiempo() {
+     {% comment %} function MostrarTiempo() {
         document.getElementById('tiempo').style.display = 'block';
         document.getElementById('start_stop').style.display = 'none';
         start_stop
         console.log("Hola muindoooooooooooooooo");
-    } 
-</script>
+    }  {% endcomment %}    
+
+
+
+    {% comment %} console.log("poooooooooooooooop");
+
+
+    let recorder;
+    let audio = document.getElementById("audio");
+    
+    
+    function stopRecording() {
+      recorder.stop();
+    }
+    
+    
+    function startRecording() {
+      navigator.mediaDevices.getUserMedia({ audio: true })
+        .then(stream => {
+          recorder = new MediaRecorder(stream);
+          recorder.start();
+    
+          let chunks = [];
+          recorder.addEventListener("dataavailable", event => {
+            chunks.push(event.data);
+          });
+    
+          recorder.addEventListener("stop", () => {
+            console.log(chunks);
+            var blob = new Blob(chunks, { type: "audio/mp3" });
+    
+            console.log(blob);
+    
+            
+            // Crea un nuevo objeto FormData
+            const formData = new FormData();
+
+            // Añade el archivo BLOB al objeto FormData con un nombre específico
+            formData.append('file', blob, "audio/mp3");
+
+            // Hace una solicitud POST al servidor Django usando el método fetch
+            fetch('/save_audio/', {
+             method: 'POST',
+             body: formData });
+
+            console.log('seee envio')
+
+
+            audio.src = URL.createObjectURL(blob);
+            audio.controls = true;
+            audio.autoplay = true;
+            console.log(audio)
+ {% endcomment %}
+
+
+
+          });
+
+
+
+
+
+
+
+
+
+
+          
+
+
+
+
+
+
+
+        });
+    }
+    
+
+
+
+
+
+
+
+
+
+
+
+    {% comment %} function saveAudio() {
+        let audio = document.getElementById("audio");
+    
+        let formData = new FormData();
+        formData.append("file", audio.src);
+    
+        let xhr = new XMLHttpRequest();
+    
+         
+        
+        xhr.open("POST", "{% url 'save_audio' %}");
+    
+        xhr.send(formData);
+        console.log("aaaaa")
+      }  {% endcomment %}
+
+
+
+
+</script> 
+
+
+
+
+
 <script src="{% static 'app/js/microfono.js' %}"></script> 
 <script src="{% static 'app/js/metronomo.js' %}"></script>
+{% comment %} <script src="{% static 'app/js/newMicrofono.js' %}"></script> {% endcomment %}
 <script src="{% static 'app/js/jquery.min.js' %}"></script>
 <script src="{% static 'app/js/jquery.dropotron.min.js' %}"></script>
 

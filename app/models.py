@@ -5,6 +5,13 @@ from django.db import models
 
 # VOCALIZACION O METRONOMO
 
+class Audio(models.Model):
+    filee = models.FileField(upload_to='archivos_media')
+    def __str__(self):
+        return str(self.usuario)
+
+
+
 
 class Vocalizacion(models.Model):
     usuario = models.ForeignKey(User,  on_delete=models.CASCADE)

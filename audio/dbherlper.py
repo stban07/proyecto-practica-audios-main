@@ -1,5 +1,5 @@
 import MySQLdb  # pip install mysqlclient
-
+from decouple import config
 
 # Conexion a base de datos mysql
 class DBHelper:
@@ -7,10 +7,10 @@ class DBHelper:
 
         self.mydb = MySQLdb.connect(
 
-            host='localhost',
-            user='root',
-            password="",
-            database='jostin_db',
+            host= config("HOST"),
+            user= config("USER"),
+            password= config("PASSWORD"),
+            database= config("NAME"),
             port=3306
         )
 

@@ -1,5 +1,8 @@
 
+
+//INICIO DE FUNCION PARA GRABAR AUDIO CON JS
 const init = () => {
+    //PREGUNTA SI SOPORTA MICROFONO CON MEDIADEVICES
     const tieneSoporteUserMedia = () =>
         !!(navigator.mediaDevices.getUserMedia)
 
@@ -15,6 +18,8 @@ const init = () => {
         $btnComenzarGrabacion = document.querySelector("#start_stop"),
         $btnDetenerGrabacion = document.querySelector("#start_stop");
 
+
+        
     // Algunas funciones útiles
     const limpiarSelect = () => {
         for (let x = $listaDeDispositivos.options.length - 1; x >= 0; x--) {
@@ -67,9 +72,6 @@ const init = () => {
         idIntervalo = setInterval(refrescar, 500);
     };
 
-
-
-
     // Comienza a grabar el audio con el dispositivo seleccionado
     const comenzarAGrabar = () => {
         if (!$listaDeDispositivos.options.length) return alert("No hay dispositivos");
@@ -85,42 +87,73 @@ const init = () => {
                     mediaRecorder = new MediaRecorder(stream);                      // Comenzar a grabar con el stream
                     mediaRecorder.start();
                     comenzarAContar();
-                    print("wwwwwwww");
+                    ; 
                     
                     const fragmentosDeAudio = [];                                   // En el arreglo pondremos los datos que traiga el evento dataavailable
                     mediaRecorder.addEventListener("dataavailable", evento => {     // Escuchar cuando haya datos disponibles
-                        fragmentosDeAudio.push(evento.data);                         // Y agregarlos a los fragmentos
-                        console.log(fragmentosDeAudio);                          // se ve por consola el objeto
+                        fragmentosDeAudio.push(evento.data); 
+                        console.log("cominsa a guardar")                        // Y agregarlos a los fragmentos
+                                               
                     });
 
 
                     // Cuando se detenga (haciendo click en el botón) se ejecuta esto
                     mediaRecorder.addEventListener("stop", () => {
-                        // Detener el stream
-                        stream.getTracks().forEach(track => track.stop());
-                        // Detener la cuenta regresiva
-                        console.log("dddddddd");
-                        detenerConteo();
+                    // Detener el stream
+                    stream.getTracks().forEach(track => track.stop());
+                    // Detener la cuenta regresiva
+                    console.log(fragmentosDeAudio);  // se ve por consola el objeto
+                    var blob = new Blob(fragmentosDeAudio, { type: "audio/mp3" });
+                    console.log(blob);
+                    console.log("dddddddd");
+                    console.log("CREANDO FORMDATA PARA ENVIAR DATOS");
+                    // Crea un nuevo objeto FormData
+                    const formData = new FormData();
+            
+                    // Añade el archivo BLOB al objeto FormData con un nombre específico
+                    formData.append('file', blob, "audio/mp3");
+            
+                    // Hace una solicitud POST al servidor Django usando el método fetch
+                    fetch('/save_audio/', {
+                     method: 'POST',
+                     body: formData });
+            
+                    console.log('DATOS ENVIADOOOS')
+            
+            
+                    audio.src = URL.createObjectURL(blob);
+                    audio.controls = true;
+                    audio.autoplay = true;
+                    console.log("AUDIO GUARDADO Y REPRODUCIENDO")
+            
+                    detenerConteo();
                     });
+
+
+
+
+
+
+
+
+
 
                     // // Cuando se detenga (haciendo click en el botón) se ejecuta esto
                     // // GUARDAR EL ARCHIVO
-                    // // mediaRecorder.addEventListener("stop", () => {
-                    // //     stream.getTracks().forEach(track => track.stop());  // Detener el stream
-                    // //     detenerConteo();                                    // Detener la cuenta regresiva
-                    // //     const blobAudio = new Blob(fragmentosDeAudio);
-                    // //     // Convertir los fragmentos a un objeto binario
-                    // //     const urlParaDescargar = URL.createObjectURL(blobAudio);        // Crear una URL o enlace para descargar
-                    // //     let a = document.createElement("a");                            // Crear un elemento <a> invisible para descargar el audio
-                    // //     document.body.appendChild(a);
-                    // //     a.style = "display: none";
-                    // //     a.href = urlParaDescargar;
-                    // //     a.download = "ejercicio_vocal.wav";
-                    // //     a.click();                                          // Hacer click en el enlace
-                    // //     window.URL.revokeObjectURL(urlParaDescargar);       // Y remover el objeto
-
-
-                    // //});
+                    //      mediaRecorder.addEventListener("stop", () => {
+                    //      stream.getTracks().forEach(track => track.stop());  // Detener el stream
+                    //      detenerConteo();                                    // Detener la cuenta regresiva
+                    //      const blobAudio = new Blob(fragmentosDeAudio);
+                    //      // Convertir los fragmentos a un objeto binario
+                    //      const urlParaDescargar = URL.createObjectURL(blobAudio);        // Crear una URL o enlace para descargar
+                    //      let a = document.createElement("a");                            // Crear un elemento <a> invisible para descargar el audio
+                    //      document.body.appendChild(a);
+                    //      a.style = "display: none";
+                    //      a.href = urlParaDescargar;
+                    //      a.download = "ejercicio_vocal.wav";
+                    //      a.click();                                          // Hacer click en el enlace
+                    //      window.URL.revokeObjectURL(urlParaDescargar);       // Y remover el ob
+                    // });
                 }
             )
             .catch(error => {
@@ -153,5 +186,10 @@ const init = () => {
 
     llenarLista();
 }
+
+
+
+
+
 // Esperar a que el documento esté listo...
 document.addEventListener("DOMContentLoaded", init);
