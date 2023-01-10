@@ -4,6 +4,16 @@ from .models import *
 
 # VOCALIZACION
 
+class MediaAdmin(admin.ModelAdmin):
+    list_display = ["audio"]  # , "bpm", "beats", "timestamp"
+
+
+admin.site.register(Media, MediaAdmin)
+
+
+
+
+
 
 class VocalizacionAdmin(admin.ModelAdmin):
     list_display = ["usuario", "audio"]  # , "bpm", "beats", "timestamp"

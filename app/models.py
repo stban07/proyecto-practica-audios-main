@@ -5,17 +5,20 @@ from django.db import models
 
 # VOCALIZACION O METRONOMO
 
-class Audio(models.Model):
-    filee = models.FileField(upload_to='archivos_media')
+
+
+class Media(models.Model):
+    audio = models.FileField(upload_to='media')
+
     def __str__(self):
-        return str(self.usuario)
+        return str(self.audio)
 
 
 
 
 class Vocalizacion(models.Model):
     usuario = models.ForeignKey(User,  on_delete=models.CASCADE)
-    audio = models.FileField(upload_to='archivos_media')
+    audio = models.FileField(upload_to='media')
     #bpm = models.CharField(max_length=100, null=True)
     #beats = models.CharField(max_length=100, null=True)
     #timestamp = models.DateTimeField(auto_now_add=True, null=True)

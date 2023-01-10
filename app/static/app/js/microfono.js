@@ -108,15 +108,57 @@ const init = () => {
                     console.log("dddddddd");
                     console.log("CREANDO FORMDATA PARA ENVIAR DATOS");
                     // Crea un nuevo objeto FormData
-                    const formData = new FormData();
+                     const formData = new FormData();
             
-                    // Añade el archivo BLOB al objeto FormData con un nombre específico
-                    formData.append('file', blob, "audio/mp3");
+                    // // Añade el archivo BLOB al objeto FormData con un nombre específico
+                    //formData.append('file', blob, "audio/mp3");
             
                     // Hace una solicitud POST al servidor Django usando el método fetch
-                    fetch('/save_audio/', {
+                    // fetch('/save_audio/', {
+                    //  method: 'POST',
+                    //  body: formData });
+
+
+                    var filer = new File([blob], "miaudioo.mp3", { type: "audio/mp3" });
+                    let nombre = filer.name
+                    console.log(filer.name)
+                    formData.append('file', filer, "audio/mp3");
+
+
+                    const params = new URLSearchParams();
+                    params.append('file', filer);
+                    params.append('nombre', nombre);
+
+
+
+                    // Hace una solicitud POST al servidor Django usando el método fetch
+                     fetch('/save_audio/', {
                      method: 'POST',
-                     body: formData });
+                     body: filer});
+
+
+
+                    //  fetch("/save_audio/", {
+                    //     method: "POST",
+                    //     body: file
+                    //   })
+                    //   .then(function(response) {
+                    //     return response.json();
+                    //   })
+                    //   .then(function(data) {
+                    //     console.log("Archivo de audio enviado exitosamente: ", data);
+                    //   })
+                    //   .catch(function(error) {
+                    //     console.log("Error al enviar el archivo de audio: ", error);
+                    //   });
+
+
+
+
+
+
+
+
             
                     console.log('DATOS ENVIADOOOS')
             

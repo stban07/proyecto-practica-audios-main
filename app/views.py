@@ -4,11 +4,18 @@ from .models import *
 import os
 from mysite.settings import MEDIA_ROOT
 from django.http import HttpResponse
-from audio.audio import Audio
 from django.views.generic import View
 from django.http import JsonResponse
 from django.shortcuts import redirect
 from django.views.decorators.csrf import csrf_exempt
+from django.core.files.storage import default_storage
+
+from django.core.files.uploadedfile import InMemoryUploadedFile
+from django.core.files.base import ContentFile
+from django.http import HttpResponse
+
+from django.utils.crypto import get_random_string
+
 
 ############### INDEX #####################
 
@@ -92,13 +99,39 @@ def memorama(request):
 
 @csrf_exempt
 def save_audio(request, *args, **kwargs):
+    print(" ele post")
     if request.method == 'POST':
-        print(" el post")
+        print(" ele post")
+        #prueba = request.FILES["file"]
+        #generamos token para evitar que se sobre escriba MODIFICAR
+        token = get_random_string(length=6)
+        archivo = f"audio{token}.mp3"
+        print("token")
         audio_file = request.body
         print(audio_file)
-        audio = Audio()
-        audio.grabarAudio(audio_file)
-        return render(request, 'app/vocalizacion.html')
+        #Guarda el archivo
+        file = default_storage.open(archivo, 'wb')
+        # Escribir el contenido del archivo
+        file.write(audio_file)
+        # Cerrar el archivo
+        file.close()
+        # Devolver la ubicación del archivo
+        print(file)
+
+        #Convertimos la url en str
+        stinggg = str(file)
+        print(stinggg);
+        #Cortamos la url 
+        urlAudio = stinggg.split("\media")
+        #traemos la ubicacion del archivo
+        urlAudio = urlAudio[1]
+        print(urlAudio)       
+        document = Media.objects.create(audio=urlAudio)
+        document.save()
+        #audio.grabarAudio(prueba)
+        #return render(request, 'app/vocalizacion.html')
+        return HttpResponse("SI")
+    return render(request, 'app/vocalizacion.html')
 
 
 
