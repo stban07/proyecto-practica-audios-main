@@ -1,9 +1,10 @@
 from django.urls import path
-from .views import index, crucigrama, eva_param_func, eva_param_text, memorama, VocalizacionView, IntensidadView, medidor, save_audio
+from .views import index, VocalizacionView, IntensidadView, save_audio
 
 
 urlpatterns = [
     path('', index, name="index"),
+
     #path('memorama/', memorama, name="memorama"),
     #path('crucigrama/', crucigrama, name="crucigrama"),
     path('vocalizacion/', VocalizacionView.as_view(), name="vocalizacion"),

@@ -8,7 +8,7 @@ class Timer {
 
         // Add method to start timer
         this.start = () => {
-            // Set the expected time. The moment in time we start the timer plus whatever the time interval is. 
+            // Set the expected time. The moment in time we start the timer plus whatever the time interval is.
             this.expected = Date.now() + this.timeInterval;
             // Start the timeout and save the id in a property, so we can cancel it later
             this.theTimeout = null;
@@ -116,18 +116,18 @@ addBeats.addEventListener('click', () => {
 });
 
 
-startStopBtn.addEventListener('click', () => {
-    count = 0;
-    if (!isRunning) {
-        metronome.start();
-        isRunning = true;
-        startStopBtn.textContent = 'STOP';
-    } else {
-        metronome.stop();
-        isRunning = false;
-        startStopBtn.textContent = 'START';
-    }
-});
+// startStopBtn.addEventListener('click', () => {
+//     count = 0;
+//     if (!isRunning) {
+//         metronome.start();
+//         isRunning = true;
+//         startStopBtn.textContent = 'STOP';
+//     } else {
+//         metronome.stop();
+//         isRunning = false;
+//         startStopBtn.textContent = 'START';
+//     }
+// });
 
 
 

@@ -1,5 +1,4 @@
 
-
 //INICIO DE FUNCION PARA GRABAR AUDIO CON JS
 const init = () => {
     //PREGUNTA SI SOPORTA MICROFONO CON MEDIADEVICES
@@ -70,6 +69,7 @@ const init = () => {
     const comenzarAContar = () => {
         tiempoInicio = Date.now();
         idIntervalo = setInterval(refrescar, 500);
+        metronome.start();
     };
 
     // Comienza a grabar el audio con el dispositivo seleccionado
@@ -83,119 +83,30 @@ const init = () => {
             }
         })
             .then(
-                stream => {
+                stream => { 
+                   
                     mediaRecorder = new MediaRecorder(stream);                      // Comenzar a grabar con el stream
                     mediaRecorder.start();
                     comenzarAContar();
-                    ; 
+                    timerId = setTimeout(() => {
+                        stop();
+                    }, 6 * 1000);
                     
                     const fragmentosDeAudio = [];                                   // En el arreglo pondremos los datos que traiga el evento dataavailable
                     mediaRecorder.addEventListener("dataavailable", evento => {     // Escuchar cuando haya datos disponibles
-                        fragmentosDeAudio.push(evento.data); 
-                        console.log("cominsa a guardar")                        // Y agregarlos a los fragmentos
-                                               
+                        fragmentosDeAudio.push(evento.data);
                     });
+
 
 
                     // Cuando se detenga (haciendo click en el botón) se ejecuta esto
                     mediaRecorder.addEventListener("stop", () => {
-                    // Detener el stream
-                    stream.getTracks().forEach(track => track.stop());
-                    // Detener la cuenta regresiva
-                    console.log(fragmentosDeAudio);  // se ve por consola el objeto
-                    var blob = new Blob(fragmentosDeAudio, { type: "audio/mp3" });
-                    console.log(blob);
-                    console.log("dddddddd");
-                    console.log("CREANDO FORMDATA PARA ENVIAR DATOS");
-                    // Crea un nuevo objeto FormData
-                     const formData = new FormData();
-            
-                    // // Añade el archivo BLOB al objeto FormData con un nombre específico
-                    //formData.append('file', blob, "audio/mp3");
-            
-                    // Hace una solicitud POST al servidor Django usando el método fetch
-                    // fetch('/save_audio/', {
-                    //  method: 'POST',
-                    //  body: formData });
-
-
-                    var filer = new File([blob], "miaudioo.mp3", { type: "audio/mp3" });
-                    let nombre = filer.name
-                    console.log(filer.name)
-                    formData.append('file', filer, "audio/mp3");
-
-
-                    const params = new URLSearchParams();
-                    params.append('file', filer);
-                    params.append('nombre', nombre);
-
-
-
-                    // Hace una solicitud POST al servidor Django usando el método fetch
-                     fetch('/save_audio/', {
-                     method: 'POST',
-                     body: filer});
-
-
-
-                    //  fetch("/save_audio/", {
-                    //     method: "POST",
-                    //     body: file
-                    //   })
-                    //   .then(function(response) {
-                    //     return response.json();
-                    //   })
-                    //   .then(function(data) {
-                    //     console.log("Archivo de audio enviado exitosamente: ", data);
-                    //   })
-                    //   .catch(function(error) {
-                    //     console.log("Error al enviar el archivo de audio: ", error);
-                    //   });
-
-
-
-
-
-
-
-
-            
-                    console.log('DATOS ENVIADOOOS')
-            
-            
-                    audio.src = URL.createObjectURL(blob);
-                    audio.controls = true;
-                    audio.autoplay = true;
-                    console.log("AUDIO GUARDADO Y REPRODUCIENDO")
-            
                     detenerConteo();
+                    // Enviar audio
+                    enviarAudio(fragmentosDeAudio);
                     });
 
 
-
-
-
-
-
-
-
-
-                    // // Cuando se detenga (haciendo click en el botón) se ejecuta esto
-                    // // GUARDAR EL ARCHIVO
-                    //      mediaRecorder.addEventListener("stop", () => {
-                    //      stream.getTracks().forEach(track => track.stop());  // Detener el stream
-                    //      detenerConteo();                                    // Detener la cuenta regresiva
-                    //      const blobAudio = new Blob(fragmentosDeAudio);
-                    //      // Convertir los fragmentos a un objeto binario
-                    //      const urlParaDescargar = URL.createObjectURL(blobAudio);        // Crear una URL o enlace para descargar
-                    //      let a = document.createElement("a");                            // Crear un elemento <a> invisible para descargar el audio
-                    //      document.body.appendChild(a);
-                    //      a.style = "display: none";
-                    //      a.href = urlParaDescargar;
-                    //      a.download = "ejercicio_vocal.wav";
-                    //      a.click();                                          // Hacer click en el enlace
-                    //      window.URL.revokeObjectURL(urlParaDescargar);       // Y remover el ob
-                    // });
                 }
             )
             .catch(error => {
@@ -205,24 +116,69 @@ const init = () => {
 
 
     const detenerConteo = () => {
+        metronome.stop();
         clearInterval(idIntervalo);
         tiempoInicio = null;
-        const duracion = $duracion.textContent
-        // document.getElementById('total_duracion').value = duracion
         $duracion.textContent = "";
     }
 
-    const detenerGrabacion = () => {
+     const stop = () => {
         if (!mediaRecorder) return
-        mediaRecorder.stop();
-        mediaRecorder = null;
-    };
+            detenerConteo();
+            mediaRecorder.stop();
+            mediaRecorder = null;
+        $btnComenzarGrabacion.textContent = "COMENZAR";
+     }
+
+
+     const enviarAudio = (fragmentosDeAudio) => {
+
+        var blob = new Blob(fragmentosDeAudio, { type: "audio/mp3" });
+
+        // Crea un nuevo objeto FormData
+         const formData = new FormData();
+
+        var filer = new File([blob], "miaudioo.mp3", { type: "audio/mp3" });
+
+
+        // Hace una solicitud POST al servidor Django usando el método fetch
+         fetch('/save_audio/', {
+         method: 'POST',
+         body: filer});
+     }
 
 
 
+//METODO PARA GET DESDE JAVASCRIPT
+    // async function getData() {
+    //     const response = await fetch('/save_audio/', {method: 'GET'})
+    //     const data = await response.json();
+    //     console.log(data["segundos"]);
+    //     segundo = data["segundos"]
+    //     promesa(segundo);
+    //     return data;
+    //   }
+    // promesa = (a) => {
+    //     document.querySelector("#segundos").textContent = a;
 
-    $btnComenzarGrabacion.addEventListener("click", comenzarAGrabar);
-    $btnDetenerGrabacion.addEventListener("click", detenerGrabacion);
+    //     console.log(a)
+    // }
+
+
+
+    clickAudio = () => {
+        console.log($btnComenzarGrabacion.textContent)
+        let val = $btnComenzarGrabacion.textContent
+        if(val === "PARAR"){
+            stop();
+            $btnComenzarGrabacion.textContent = "COMENZAR"
+        }else if(val = "COMENZAR"){
+            comenzarAGrabar();
+            $btnComenzarGrabacion.textContent = "PARAR"
+        }
+     }
+
+    
 
     // Cuando ya hemos configurado lo necesario allá arriba llenamos la lista
 

@@ -1,4 +1,7 @@
 pillow
 django-admin-interface
 django-crispy-forms
-decouple
+python-decouple
+
+
+admin1234a
