@@ -1,15 +1,6 @@
 from django import forms
 from .models import *
 
-# VOCALIZACION O METRONOMO
-
-
- # INTENSIDAD
-class IntensidadForm(forms.ModelForm):
-     class Meta:
-         """Meta definition for Vocalizacionform."""
-         model = Intensidad
-         fields = '__all__'
 
 # # MEMORICE
 

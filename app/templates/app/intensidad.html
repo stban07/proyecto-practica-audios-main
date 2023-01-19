@@ -7,14 +7,22 @@
 {% endblock %}
 
 {% block contenido %}
+
+<div class="container-mic" style="display:none;">
+    <div class="selector-audio">
+        <select name="listaDeDispositivos" id="listaDeDispositivos"></select>
+    </div>
+</div>
+
+
 <div style="width:100%; display:flex; justify-content:center; margin:5px;">
-    <form method="POST" id="post-form">
-        {% csrf_token %}
-        <div id="tiempo" style="display: none;">
-            <h3>La grabacion terminara automaticamente en 5 segundos</h3>
-        </div>
-        <button type="submit" id="start_stop" class="start-stop" onclick="MostrarTiempo()">START</button>
-    </form>
+    <p id="segundos"></p>
+    <p class="duracion" id="duracion">La grabacion comenzara una vez precione el boton</p>
+</div>
+
+   
+<div style="width:100%; display:flex; justify-content:center; margin:5px;">
+     <button  id="start_stop" class="start-stop" onclick="clickAudio(true)">START</button>
 </div>
 <link type="text/css" rel="stylesheet" href="{% static 'app/css/oscilagrama.css' %}">
 
@@ -138,13 +146,13 @@
                             flex-wrap:wrap;">
             <h2>Recuerda</h2>
             <p><strong>Al ejercitar debes respirar por la nariz
-                Tus ejercicios deben durar 5 minutos aproximadamente</strong></p>
+                Tus ejercicios deben durar 5 minutos aproximadamente</strong></p>  
         </div>
     </div>
 </div>
 {% block js %}
-<script src="{% static 'app/js/oscilagrama/metronomo.js'  %}"></script>
-<script src="{% static 'app/js/oscilagrama/microfono.js'    %}"></script>
+{% comment %} <script src="{% static 'app/js/oscilagrama/metronomo.js'  %}"></script> {% endcomment %}
+<script src="{% static 'app/js/microfono.js'    %}"></script>
 <script src="{% static 'app/js/oscilagrama/oscilagrama.js'  %}"></script>
 <script src="{% static 'app/js/oscilagrama/chart.js'        %}"></script>
 <script src="{% static 'app/js/oscilagrama/data.js'         %}"></script>

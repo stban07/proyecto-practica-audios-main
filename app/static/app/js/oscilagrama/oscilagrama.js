@@ -47,9 +47,6 @@ var config = {
             if (document.location.search === "?tab") config.port.name = "tab";
             if (document.location.search === "?win") config.port.name = "win";
             /*  */
-            chrome.runtime.connect({
-              "name": config.port.name
-            });
           }
         }
       }

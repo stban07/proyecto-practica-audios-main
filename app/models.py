@@ -14,12 +14,13 @@ class Media(models.Model):
         return str(self.audio)
 
 # INTENSIDAD
-class Intensidad(models.Model):
+class Parametros(models.Model):
     idusuario = models.BigAutoField(primary_key=True)
-    bpm = models.CharField(max_length=100)
-    tiempo = models.CharField(max_length=100)
+    tiempoVocalizacion = models.CharField(max_length=100)
+    tiempoIntensidad = models.CharField(max_length=100)
+    Descripcion = models.CharField(max_length=100)
     def __str__(self):
-        return str(self.tiempo)
+        return str(self.tiempoVocalizacion)
 
 
 

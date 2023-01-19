@@ -12,15 +12,26 @@
 
 <!-- Saludo principal -->
 <div class="container-padre">
-    <div class="">
+    
+<div style="">
         <div class="saludo">
             <div class="Bienvenida">
                 <h2>Bienvenido</h2>
                 
-                <p style="color:#000000;"><strong>Buenos días , Esta semana debes trabajar con BPM, Recuerde ajustar muy bien su tiempo y BPM</strong></p>
+                <p style="color:#000000;"><strong>Buenos días {{paciente}}, Esta semana debes trabajar con BPM, Recuerde ajustar muy bien su tiempo y BPM</strong></p>
             </div>
         </div>
-    </div>
+
+        <div class="saludo2">
+            <div class="Bienvenida">
+                <h2>Recuerda</h2>
+                <p style="color:#000000"><strong>Al Ejercitar, debes respirar por la nariz y  tus ejercicios deben durar 5 minutos aproximadamente</strong></p>
+            </div>
+        </div>
+</div>
+
+
+
     <!-- metronomo -->
     <div class="container-metronome">
         <div class="metronome">
@@ -38,11 +49,11 @@
             </div>
             <div class="controlador">
 
-                <button onclick="clickAudio()" id="start_stop" class="start-stop">COMENZAR EJERCITACIÓN</button>
+                <button onclick="clickAudio(false)" id="start_stop" class="start-stop">COMENZAR EJERCITACIÓN</button>
                 <form method="POST" id="post-form" enctype="multipart/form-data">
                     {% csrf_token %} 
                     <div id="tiempo" >
-                        <h3>La grabacion terminara automaticamente en {{segundos}} segundos</h3>
+                        <h3>La grabacion terminara automaticamente en<p id="segundos">{{parametros}}</p>segundos</h3>
                     </div>
                 </form>
                 <div class="measures">
@@ -61,20 +72,11 @@
         </div>
     </div>
 
-    <!-- Saludo principal -->
-
-    <div class="">
-        <div class="saludo2">
-            <div class="Bienvenida">
-                <h2>Recuerda</h2>
-                <p style="color:#000000"><strong>Al Ejercitar, debes respirar por la nariz y  tus ejercicios deben durar 5 minutos aproximadamente</strong></p>
 
 
-            </div>
-        </div>
-    </div>
 </div>
-<div class="container-mic">
+
+<div class="container-mic" style="display:none;">
     <div class="selector-audio">
         <select name="listaDeDispositivos" id="listaDeDispositivos"></select>
     </div>

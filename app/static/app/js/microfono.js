@@ -15,12 +15,12 @@ const init = () => {
     const $listaDeDispositivos = document.querySelector("#listaDeDispositivos"),
         $duracion = document.querySelector("#duracion"),
         $btnComenzarGrabacion = document.querySelector("#start_stop"),
-        $btnDetenerGrabacion = document.querySelector("#start_stop");
+
 
 
         
     // Algunas funciones útiles
-    const limpiarSelect = () => {
+     limpiarSelect = () => {
         for (let x = $listaDeDispositivos.options.length - 1; x >= 0; x--) {
             $listaDeDispositivos.options.remove(x);
         }
@@ -69,11 +69,11 @@ const init = () => {
     const comenzarAContar = () => {
         tiempoInicio = Date.now();
         idIntervalo = setInterval(refrescar, 500);
-        metronome.start();
+        
     };
 
     // Comienza a grabar el audio con el dispositivo seleccionado
-    const comenzarAGrabar = () => {
+    const comenzarAGrabar = (op) => {
         if (!$listaDeDispositivos.options.length) return alert("No hay dispositivos");
         if (mediaRecorder) return alert("Excelente, completaste tu Ejercitación. Recuerda que debes ejercitar almenos 3 veces al día"); // No permitir que se grabe doblemente
 
@@ -84,13 +84,19 @@ const init = () => {
         })
             .then(
                 stream => { 
-                   
+                    a = document.querySelector("#segundos").textContent; 
                     mediaRecorder = new MediaRecorder(stream);                      // Comenzar a grabar con el stream
                     mediaRecorder.start();
-                    comenzarAContar();
-                    timerId = setTimeout(() => {
-                        stop();
-                    }, 6 * 1000);
+                    ///////////
+                    if(op === true){
+                        comenzarAContar();
+                    }else{
+                        comenzarAContar();
+                        metronome.start();
+                        timerId = setTimeout(() => {
+                            stop();
+                        },  a  * 1100);
+                    }
                     
                     const fragmentosDeAudio = [];                                   // En el arreglo pondremos los datos que traiga el evento dataavailable
                     mediaRecorder.addEventListener("dataavailable", evento => {     // Escuchar cuando haya datos disponibles
@@ -101,9 +107,20 @@ const init = () => {
 
                     // Cuando se detenga (haciendo click en el botón) se ejecuta esto
                     mediaRecorder.addEventListener("stop", () => {
-                    detenerConteo();
+
+
+                    let nombre = ""
+                    if(op === true){
+                        detenerConteo();
+                        nombre = "intensidad"
+                    }else{
+                        detenerConteo();
+                        metronome.stop();
+                        nombre = "vocalizacion"
+                    }
+
                     // Enviar audio
-                    enviarAudio(fragmentosDeAudio);
+                    enviarAudio(fragmentosDeAudio,nombre);
                     });
 
 
@@ -116,10 +133,9 @@ const init = () => {
 
 
     const detenerConteo = () => {
-        metronome.stop();
         clearInterval(idIntervalo);
         tiempoInicio = null;
-        $duracion.textContent = "";
+        $duracion.textContent = "La grabacion comenzara una vez precione el boton";
     }
 
      const stop = () => {
@@ -131,20 +147,22 @@ const init = () => {
      }
 
 
-     const enviarAudio = (fragmentosDeAudio) => {
+     const enviarAudio = (fragmentosDeAudio,name) => {
 
-        var blob = new Blob(fragmentosDeAudio, { type: "audio/mp3" });
+        var blob = new Blob(fragmentosDeAudio);
 
         // Crea un nuevo objeto FormData
-         const formData = new FormData();
+        const formData = new FormData();
 
-        var filer = new File([blob], "miaudioo.mp3", { type: "audio/mp3" });
 
+        var filer = new File([blob], "miaudio.mp3", { type: "audio/mp3" });
+        formData.append('file', filer);
+        formData.append('string', name);
 
         // Hace una solicitud POST al servidor Django usando el método fetch
          fetch('/save_audio/', {
          method: 'POST',
-         body: filer});
+         body: formData});
      }
 
 
@@ -158,22 +176,22 @@ const init = () => {
     //     promesa(segundo);
     //     return data;
     //   }
-    // promesa = (a) => {
-    //     document.querySelector("#segundos").textContent = a;
 
-    //     console.log(a)
+    // promesa = () => {
+    //      a = document.querySelector("#segundos").textContent;
+    //      retr
     // }
 
 
 
-    clickAudio = () => {
+    clickAudio = (a) => {
         console.log($btnComenzarGrabacion.textContent)
         let val = $btnComenzarGrabacion.textContent
         if(val === "PARAR"){
             stop();
             $btnComenzarGrabacion.textContent = "COMENZAR"
         }else if(val = "COMENZAR"){
-            comenzarAGrabar();
+            comenzarAGrabar(a);
             $btnComenzarGrabacion.textContent = "PARAR"
         }
      }

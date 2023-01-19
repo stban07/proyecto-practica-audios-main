@@ -257,3 +257,15 @@ html[context="webapp"] .toolbar {
 html[context="webapp"] .loader {
   width: "100%";
 } 
+
+
+
+
+
+.center{
+  width:100%; 
+  display:flex; 
+  justify-content:center; 
+  margin:5px;
+
+}

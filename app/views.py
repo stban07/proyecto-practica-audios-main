@@ -26,11 +26,9 @@ def index(request):
 class IntensidadView(View):
 
     def get(self, request, *args, **kwargs):
-        print(request.user.id)
         return render(request, 'app/intensidad.html')
 
     def post(self, request, *args, **kwargs):
-        print("hola estoy en el post")
         return render(request, 'app/intensidad.html')
 
 
@@ -99,34 +97,14 @@ def save_audio(request, *args, **kwargs):
         current_time = now.strftime("%d-%m-%Y %H:%M.%S")
         hms = now.strftime("%H:%M.%S")
         token = get_random_string(length=2)
-        archivo = f"{token}_{hms}_vocal.mp3"
-        audio_file = request.body
+        nombre = request.POST.get('string')
+        archivo = f"{token}_{hms}_{nombre}.mp3"
+        audio_file = request.FILES.get('file')
         #Guarda el archivo
-        file = default_storage.open(archivo, 'wb')
-        # Escribir el contenido del archivo
-        file.write(audio_file)
-        # Cerrar el archivo # Devolver la ubicación del archivo
-        file.close()
-
-        #ELIMINAR ESTE CODIGO EN PYTHONANYWHERE######
-        #Convertimos la url en str
-        stinggg = str(file)
-        #Cortamos la url
-        urlAudio = stinggg.split("\media")
-        #traemos la ubicacion del archivo
-        urlAudio = urlAudio[1]
-        #############################################
-
-        document = Media.objects.create(audio=urlAudio,timestamp=current_time)
+        arc = default_storage.save(archivo,audio_file)
+        document = Media.objects.create(audio=arc,timestamp=current_time)
         document.save()
-        #audio.grabarAudio(prueba)
-        #return render(request, 'app/vocalizacion.html')
         return HttpResponse("200")
-
-    if request.method == 'GET':
-        obj = str(Intensidad.objects.get(idusuario=1))
-        return JsonResponse({"segundos":obj})
-
 
 
     return render(request, 'app/vocalizacion.html')
@@ -136,10 +114,34 @@ def save_audio(request, *args, **kwargs):
 class VocalizacionView(View):
 
     def get(self, request):
-        obj = str(Intensidad.objects.get(idusuario=2))
-        return render(request, 'app/vocalizacion.html',{"segundos":obj})
-    
+        obj = Parametros.objects.get(idusuario=3)
+        pac = Paciente.objects.get(idPaciente=1)
+
+
+        # lista = {"segundos":obj["tiempo"],
+        #          "Nombre":pac["Nombre"],
+        #          "BPM":obj["bpm"]}
+
+
+
+        print(pac);
+        return render(request, 'app/vocalizacion.html',{"parametros":obj,
+                                                        "paciente":pac})
+
     def post(self, request):
         return render(request, 'app/vocalizacion.html')
+    
+    
+    
+    
+    
+    
+    
+class LoginView(View):
 
+    def get(self, request, *args, **kwargs):
+        return render(request, 'app/login.html')
+
+    def post(self, request, *args, **kwargs):
+        return render(request, 'app/login.html')
 

@@ -12,9 +12,9 @@ admin.site.register(Media, MediaAdmin)
 
 
 # INTENSIDAD
-class IntensidadAdmin(admin.ModelAdmin):
-    list_display = ["idusuario","bpm", "tiempo"]  # , "bpm", "beats", "timestamp"
-admin.site.register(Intensidad, IntensidadAdmin)
+class ParametroAdmin(admin.ModelAdmin):
+    list_display = ["idusuario", "tiempoVocalizacion", "tiempoIntensidad", "Descripcion"]  # , "bpm", "beats", "timestamp"
+admin.site.register(Parametros, ParametroAdmin)
 
 
 

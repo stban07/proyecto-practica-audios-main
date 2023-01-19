@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import index, VocalizacionView, IntensidadView, save_audio
+from .views import index, VocalizacionView, IntensidadView, save_audio, LoginView
 
 
 urlpatterns = [
@@ -10,6 +10,7 @@ urlpatterns = [
     path('vocalizacion/', VocalizacionView.as_view(), name="vocalizacion"),
     path('save_audio/', save_audio, name="save_audio"),
     path('intensidad/', IntensidadView.as_view(), name="intensidad"),
+    path('login/', LoginView.as_view(), name="loginn"),
     #path('medidor/', medidor, name="medidor"),
     #path('eva_param_func/', eva_param_func, name="eva_param_func"),
     #path('eva_param_text/', eva_param_text, name="eva_param_text"),
