@@ -1,4 +1,5 @@
-from django.shortcuts import render
+from django.contrib import messages
+from django.shortcuts import render, redirect
 from .forms import *
 from .models import *
 from django.http import HttpResponse
@@ -7,17 +8,20 @@ from django.views.generic import View
 from django.views.decorators.csrf import csrf_exempt
 from django.core.files.storage import default_storage
 
-from django.http import HttpResponse,JsonResponse
-from django.core import serializers
+from django.contrib.auth.decorators import login_required
+
+from django.http import HttpResponse
+from django.contrib.auth import authenticate, login
 from django.utils.crypto import get_random_string
 from datetime import datetime
-import json
+
 
 
 ############### INDEX #####################
 
 
 def index(request):
+    print(request)
     return render(request, 'app/index.html')
 
 ############### INTENSIDAD #####################
@@ -88,6 +92,31 @@ class IntensidadView(View):
 
 
 
+def registro(request):
+    dato = {
+        'form': CustomUserCreationForm()
+    }
+    if request.method == 'POST':
+        print("re")
+        formulario = CustomUserCreationForm(data=request.POST)
+        if formulario.is_valid():
+            formulario.save()
+            print("registro")
+            # user = authenticate(username = formulario.cleaned_data["username"], password= formulario.cleaned_data["password1"])
+            # login(request, user)
+            messages.success(request,"te has registrado correctamente")
+        return redirect('login')
+    return render(request, 'registration/registro.html', dato)
+
+
+
+
+
+
+
+
+
+
 @csrf_exempt
 def save_audio(request, *args, **kwargs):
 
@@ -102,7 +131,7 @@ def save_audio(request, *args, **kwargs):
         audio_file = request.FILES.get('file')
         #Guarda el archivo
         arc = default_storage.save(archivo,audio_file)
-        document = Media.objects.create(audio=arc,timestamp=current_time)
+        document = Audio.objects.create(url_audio=arc,timestamp=current_time)
         document.save()
         return HttpResponse("200")
 
@@ -111,22 +140,16 @@ def save_audio(request, *args, **kwargs):
 
 ########################## VOCALIZACION ################################
 ############## CONFIGURAR CORRECTAMENTE PARA GUARDAR#####################
+
 class VocalizacionView(View):
 
     def get(self, request):
-        obj = Parametros.objects.get(idusuario=3)
-        pac = Paciente.objects.get(idPaciente=1)
-
-
-        # lista = {"segundos":obj["tiempo"],
-        #          "Nombre":pac["Nombre"],
-        #          "BPM":obj["bpm"]}
-
-
-
-        print(pac);
-        return render(request, 'app/vocalizacion.html',{"parametros":obj,
-                                                        "paciente":pac})
+        
+        #DESCOMENTAR ESTO ES PARA OBTENER LOS DATOS DEL PACIENTE, PARAMETROS Y MOSTRAR EN EL FRONT SE NECESITA EL ID PARA BUSCAR
+        # # obj = Parametros.objects.get()
+        # # pac = Paciente.objects.get()
+        # # {"parametros":obj,"paciente":pac}
+        return render(request, 'app/vocalizacion.html')
 
     def post(self, request):
         return render(request, 'app/vocalizacion.html')
@@ -142,6 +165,16 @@ class LoginView(View):
     def get(self, request, *args, **kwargs):
         return render(request, 'app/login.html')
 
-    def post(self, request, *args, **kwargs):
+    def post(self, request):
+        if request.method == 'POST':
+            print(request.POST)
+            formulario = CustomUserCreationForm(data=request.POST)
+            print(formulario)
+            if formulario.is_valid():
+                print("postttt")
+                user = authenticate(username = formulario.cleaned_data["username"], password= formulario.cleaned_data["password"])
+                login(request, user)
+                messages.success(request,"te has registrado correctamente")
+                return redirect(to='app/index.html')
         return render(request, 'app/login.html')
 

@@ -27,17 +27,17 @@
                         {% if user.is_authenticated %}
                         <li class="current">
                             <a href="{% url 'logout' %}">Cerrar Sesion</a>
+                            <li><a href="{% url 'vocalizacion' %}">Vocalización</a></li>
+                            <li><a href="{% url 'intensidad' %}">Intensidad</a></li>
                         </li>
                         <li>
                             <a href=""> Hola {{ user.username}}</a>
                         </li>
                         {% else %}
                         <li class="current">
-                            <a href="{% url 'loginn' %}">Iniciar sesion</a>
+                            <a href="{% url 'login' %}">Iniciar sesion</a>
                         </li>
                         {% endif %}
-                        <li><a href="{% url 'vocalizacion' %}">Vocalización</a></li>
-                        <li><a href="{% url 'intensidad' %}">Intensidad</a></li>
 
                         
                         <!-- <li class="current"><a href="{% url 'login' %}">Iniciar Sesion</a></li> -->

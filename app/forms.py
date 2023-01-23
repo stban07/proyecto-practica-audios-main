@@ -1,8 +1,23 @@
 from django import forms
 from .models import *
+from django.contrib.auth.forms import UserCreationForm
+
+User = Usuario;
 
 
-# # MEMORICE
+class CustomUserCreationForm(UserCreationForm):
+    class Meta(UserCreationForm.Meta):
+        model = User
+        fields = UserCreationForm.Meta.fields
+
+
+
+
+
+
+
+
+
 
 
 # class MemoriceForm(forms.ModelForm):
