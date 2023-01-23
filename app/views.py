@@ -122,6 +122,7 @@ def save_audio(request, *args, **kwargs):
 
     if request.method == 'POST':
         #generamos token para evitar que se sobre escriba MODIFICAR
+        print(request.user.username)
         now = datetime.now()
         current_time = now.strftime("%d-%m-%Y %H:%M.%S")
         hms = now.strftime("%H:%M.%S")
@@ -131,7 +132,7 @@ def save_audio(request, *args, **kwargs):
         audio_file = request.FILES.get('file')
         #Guarda el archivo
         arc = default_storage.save(archivo,audio_file)
-        document = Audio.objects.create(url_audio=arc,timestamp=current_time)
+        document = Audio.objects.create(url_audio=arc,timestamp=current_time,idusuario=request.user)
         document.save()
         return HttpResponse("200")
 

@@ -38,6 +38,8 @@ class Usuario(AbstractUser):
        id_tipo_user = models.ForeignKey(TipoUsuario, on_delete=models.CASCADE,null=True)
        comuna = models.ForeignKey(Comuna, on_delete=models.CASCADE,null=True)
 
+
+
 # # # # #PACIENTE
 class Paciente(models.Model):
        idPaciente = models.BigAutoField(primary_key=True)
@@ -99,7 +101,7 @@ class Audio(models.Model):
      id_audio = models.BigAutoField(primary_key=True)
      url_audio = models.FileField(upload_to='media')
      timestamp = models.CharField(max_length=100)
-     idPaciente = models.ForeignKey(Paciente, on_delete=models.CASCADE,null=True)
+     idusuario = models.ForeignKey(Usuario, on_delete=models.CASCADE,null=True)
      def __str__(self):
          return str(self.url_audio)
 

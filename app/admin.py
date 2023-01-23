@@ -2,7 +2,13 @@ from django.contrib import admin
 from .models import *
 # Register your models here.
 
-admin.site.register(Usuario)
+
+
+
+
+class UsuarioAdmin(admin.ModelAdmin):
+     list_display = ("username", "email", "first_name", "last_name", "is_staff")
+admin.site.register(Usuario, UsuarioAdmin)
 
 # #Comuna
 class ComunaAdmin(admin.ModelAdmin):
@@ -72,7 +78,7 @@ admin.site.register(Profesional_Paciente, Profesional_PacienteAdmin)
 
 # #AUDIO
 class AudioAdmin(admin.ModelAdmin):
-     list_display = ["id_audio", "url_audio", "timestamp","idPaciente"]
+     list_display = ["id_audio", "url_audio", "timestamp","idusuario"]
 admin.site.register(Audio,  AudioAdmin)
 
 
