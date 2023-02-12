@@ -6,6 +6,9 @@ from .serializers import ExampleModelSerializer, Profesional_saludSerializer, Au
 
 from app.models import Institucion, Profesional_salud, TipoUsuario, Usuario, Audio
 
+
+import requests
+
 # Create your views here.
 
 class ExampleModelList(generics.ListCreateAPIView):
@@ -57,3 +60,43 @@ class AudioList(generics.ListCreateAPIView):
             queryset = queryset.filter(url_audio__endswith=url_audio)
 
         return queryset
+
+
+def botonesApiView(request):
+    return render(request, 'botonesApi.html')
+
+
+
+def get_audios():
+    response = requests.get('http://127.0.0.1:8000/api/audios/')
+    if response.status_code == 200:
+        return response.json()
+    return None
+
+def get_audiosVocalizacion():
+    response = requests.get('http://127.0.0.1:8000/api/audios?url_audio=vocalizacion.mp3')
+    if response.status_code == 200:
+        return response.json()
+    return None
+
+def get_audiosIntensidad():
+    response = requests.get('http://127.0.0.1:8000/api/audios?url_audio=intensidad.mp3')
+    if response.status_code == 200:
+        return response.json()
+    return None
+
+def audioList_View(request):
+    audios = get_audios()
+    context = {'audios': audios}
+    return render(request, 'audio_list.html', context)
+
+
+def audioVocalizacion_View(request):
+    audios = get_audiosVocalizacion()
+    context = {'audios': audios}
+    return render(request, 'audiosVocalizacion.html', context)
+
+def audioIntensidad_View(request):
+    audios = get_audiosIntensidad()
+    context = {'audios': audios}
+    return render(request, 'audiosIntensidad.html', context)
