@@ -6,7 +6,7 @@
 {% endblock %}
 {% block contenido %}
 <link type="text/css" rel="stylesheet" href="{% static 'app/css/index.css' %}">
-            <!-- Banner -->
+            {% if user_type == 'Paciente' %}
             <div id="banner-wrapper">
                 <div id="banner" class="box container">
                     <div class="row">
@@ -20,6 +20,93 @@
                     </div>
                 </div>
             </div>
+
+            {%  elif request.user.is_superuser%}
+            <div id="banner-wrapper">
+                <div id="banner" class="box container">
+                    <div class="row">
+                        <div class="col-7 col-12-medium">
+                            <h2>Hola!, ADMINISTRADOR {{request.user.username}}</h2>
+                            <p>Registra y Supervisas a los usuarios del sistema <br></p>
+                        </div>
+                        <div class="col-5 col-12-medium">
+                            <img class="image fit" src="static/app/recursos/img/imagen-banner.jpg" alt="imagen-banner">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {%  elif user_type == 'Enfermera' or  user_type == 'Fonoaudilogo' %}
+            <div id="banner-wrapper">
+                <div id="banner" class="box container">
+                    <div class="row">
+                        <div class="col-7 col-12-medium">
+                            <h2>Hola!, {{user_type}} {{request.user.first_name}} </h2>
+                            <p>Recete medicina, citas online, seguimiento de pacientes <br> Todo esto y mas sin salir de tu hogar</p>
+                        </div>
+                        <div class="col-5 col-12-medium">
+                            <img class="image fit" src="static/app/recursos/img/imagen-banner.jpg" alt="imagen-banner">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {%  elif user_type == 'Familiar'%}
+            <div id="banner-wrapper">
+                <div id="banner" class="box container">
+                    <div class="row">
+                        <div class="col-7 col-12-medium">
+                            <h2>Hola!, Bienvenido {{request.user.first_name}}</h2>
+                            <p>Tu Familiar: Paciente04 <br> Esta Super bien</p>
+                        </div>
+                        <div class="col-5 col-12-medium">
+                            <img class="image fit" src="static/app/recursos/img/imagen-banner.jpg" alt="imagen-banner">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {%else%}
+            <div id="banner-wrapper">
+                <div id="banner" class="box container">
+                    <div class="row">
+                        <div class="col-7 col-12-medium">
+                            <h2>Hola!, Bienvenido a tú terapia Online</h2>
+                            <p>Jamás fue tan Sencilla, entretenida y comoda. <br> Todo esto y mas sin salir de tu hogar</p>
+                        </div>
+                        <div class="col-5 col-12-medium">
+                            <img class="image fit" src="static/app/recursos/img/imagen-banner.jpg" alt="imagen-banner">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif%}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
             <!-- Features -->
             <div id="features-wrapper">

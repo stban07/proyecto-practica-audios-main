@@ -2,18 +2,24 @@ from django import forms
 from .models import *
 from django.contrib.auth.forms import UserCreationForm
 
-User = Usuario;
 
 
 class CustomUserCreationForm(UserCreationForm):
+    
     class Meta(UserCreationForm.Meta):
-        model = User
-        fields = UserCreationForm.Meta.fields
+        model = Usuario
+        fields =  ('email','username', 'first_name', 'last_name', 'id_tipo_user', 'password1', 'password2')
 
 
 
 
 
+
+
+class PreRegistroFrom(forms.ModelForm):
+    class Meta():
+        model = PreRegistro
+        fields = '__all__'
 
 
 

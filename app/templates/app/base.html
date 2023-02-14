@@ -24,19 +24,34 @@
                 <!-- Nav -->
                 <nav id="nav">
                     <ul>
-                        {% if user.is_authenticated %}
+                        {% if user_type == 'Paciente' %}
                         <li class="current">
                             <a href="{% url 'logout' %}">Cerrar Sesion</a>
                             <li><a href="{% url 'vocalizacion' %}">Vocalización</a></li>
                             <li><a href="{% url 'intensidad' %}">Intensidad</a></li>
                         </li>
                         <li>
-                            <a href=""> Hola {{ user.username}}</a>
+                            <a href="">{{ user.username}}</a>
                         </li>
-                        {% else %}
+                        {%  elif request.user.is_superuser%}
+                        <li class="current">
+                            <li><a href="{% url 'registro' %}" >Registrar Usuarios</a></li>
+                            <li><a href="{% url 'preregistrados' %}" >Usuarios Pre-Registrados</a></li>
+                            <li><a href="{% url 'logout' %}">Cerrar Sesion</a></li>
+                        </li>
+                        {%  elif user_type == 'Enfermera' or  user_type == 'Fonoaudilogo' %}
+                        <li class="current">
+
+                            <li><a href="{% url 'logout' %}">Cerrar Sesion</a></li>
+                        </li>
+                        {%  elif user_type == 'Familiar'%}
+                        <li class="current">
+                            <li><a href="{% url 'logout' %}">Cerrar Sesion</a></li>
+                        </li>
+                        {%  else %}
                         <li class="current">
                             <a href="{% url 'login' %}">Iniciar sesion</a>
-                            <li><a>Pre-Registro</a></li>
+                            <li><a href="{% url 'preregistro' %}">Pre-Registro</a></li>
                         </li>
                         {% endif %}
 
