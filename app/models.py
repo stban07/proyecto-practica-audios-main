@@ -44,7 +44,7 @@ class PreRegistro(models.Model):
         rut = models.CharField(max_length=100)
         nombre = models.CharField(max_length=100)
         apellido = models.CharField(max_length=100) 
-        tipo_user = models.CharField(max_length=100)
+        tipo_user = models.CharField(max_length=100, null=True)
         email = models.CharField(max_length=100)
         telefono = models.CharField(max_length=100)
         def __str__(self):
@@ -77,7 +77,7 @@ class Institucion(models.Model):
 class Usuario(AbstractUser):
        # username = models.CharField(unique=True, max_length=150)
        # password = models.CharField(max_length=128)
-       id_tipo_user = models.ForeignKey(TipoUsuario, on_delete=models.CASCADE,null=True)
+       id_tipo_user = models.ForeignKey(TipoUsuario, on_delete=models.SET_NULL,null=True)
        comuna = models.ForeignKey(Comuna, on_delete=models.SET_NULL,null=True)
        def __str__(self):
            return str(self.id_tipo_user)

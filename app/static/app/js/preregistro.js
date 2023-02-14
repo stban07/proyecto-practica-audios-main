@@ -19,11 +19,14 @@ clickRut = () => {
         if (response.Nombre){
           alert("Hola Eres Fonoaudilogo") 
           $('#rutvalidate').hide();
+          $('#id_tipo_user').hide();
           $('#formulario').show();
+          let tipo_user = document.querySelector("#id_tipo_user");
+
           let rut = document.querySelector("#id_rut");
           let nombre = document.querySelector("#id_nombre");
           let apellido = document.querySelector("#id_apellido")
-          let tipo_user = document.querySelector("#id_tipo_user");
+          
 
           
           let FullName = response.Nombre
@@ -39,7 +42,10 @@ clickRut = () => {
         }else if (response.SI){
           alert("No tenemos Informacion del Rut, Complete el formulario de PreRegistro") 
           $('#rutvalidate').hide();
+          $('#id_tipo_user').hide(); 
           $('#formulario').show();
+          
+          document.querySelector("#id_tipo_user").value = "none";
 
         }
 
