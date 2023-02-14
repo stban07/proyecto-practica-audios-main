@@ -1,7 +1,7 @@
 from __future__ import unicode_literals 
 from django.db import models
 from django.contrib.auth.models import AbstractUser
-
+from django.db.models import Q
 # Create your models here. 
 ##FALTA CREAR TABLAS DE 
 ###PROVINCIA-REGION(se relacionan con comuna) Y 6 TABLAS DE PACIENTE
@@ -12,13 +12,55 @@ class TipoUsuario(models.Model):
         descripcion = models.CharField(max_length=100)
         def __str__(self):
             return str(self.nombre_tipo_usuario)
+    
+    
+# # REGION  
+class Region(models.Model):
+       id_region = models.BigAutoField(primary_key=True)
+       nombre_region = models.CharField(max_length=100)
+       def __str__(self):
+           return str(self.nombre_region)
+            
+# # #Provincia
+class Provincia(models.Model):
+       id_provincia = models.BigAutoField(primary_key=True)
+       nombre_provincia = models.CharField(max_length=100)
+       id_region = models.ForeignKey(Region, on_delete=models.CASCADE,null=True)
+       def __str__(self):
+           return str(self.nombre_provincia)
+            
+
 
 # # #COMUNA
 class Comuna(models.Model):
        id_comuna = models.BigAutoField(primary_key=True)
        nombre_comuna = models.CharField(max_length=100)
+       id_provincia = models.ForeignKey(Provincia, on_delete=models.CASCADE,null=True)
        def __str__(self):
-           return str(self.nombre_comuna)
+           return str(self.nombre_comuna)    
+    
+    
+class PreRegistro(models.Model):
+        rut = models.CharField(max_length=100)
+        nombre = models.CharField(max_length=100)
+        apellido = models.CharField(max_length=100) 
+        tipo_user = models.CharField(max_length=100)
+        email = models.CharField(max_length=100)
+        telefono = models.CharField(max_length=100)
+        def __str__(self):
+            return str(self.rut)
+    
+        
+#  #        
+class Tipoaudio(models.Model):
+        nombre_tipo_usuario = models.CharField(max_length=100)
+        descripcion = models.CharField(max_length=100)
+        def __str__(self):
+            return str(self.nombre_tipo_usuario)
+                
+        
+        
+
     
 # # #Institucion
 class Institucion(models.Model):
@@ -36,21 +78,38 @@ class Usuario(AbstractUser):
        # username = models.CharField(unique=True, max_length=150)
        # password = models.CharField(max_length=128)
        id_tipo_user = models.ForeignKey(TipoUsuario, on_delete=models.CASCADE,null=True)
-       comuna = models.ForeignKey(Comuna, on_delete=models.CASCADE,null=True)
+       comuna = models.ForeignKey(Comuna, on_delete=models.SET_NULL,null=True)
+       def __str__(self):
+           return str(self.id_tipo_user)
 
 
 
+##   diabetes
+class Diabetes(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    tipo_diabetes = models.CharField(max_length=45)
+    def __str__(self):
+         return str(self.tipo_diabetes)
+     
+##   hipertension
+class Hipertension(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    estado_hipertension = models.CharField(max_length=45)
+    def __str__(self):
+         return str(self.estado_hipertension)
+     
 # # # # #PACIENTE
 class Paciente(models.Model):
        idPaciente = models.BigAutoField(primary_key=True)
        rut_paciente = models.CharField(max_length=100)
        telegram_paciente = models.CharField(max_length=100)
-       diabetes = models.CharField(max_length=100)
-       hipertencion = models.CharField(max_length=100)
+       diabetes = models.ForeignKey(Diabetes, on_delete=models.CASCADE,null=True)
+       hipertencion = models.ForeignKey(Hipertension, on_delete=models.CASCADE,null=True)
        Observacion = models.CharField(max_length=100)
-       id_usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE,null=True)
+       id_usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE,null=True, limit_choices_to={'id_tipo_user':1}) 
        def __str__(self):
            return str(self.rut_paciente)
+       
     
 # #FAMILIAR
 class Familiar(models.Model):
@@ -84,12 +143,15 @@ class Profesional_salud(models.Model):
 
 
 
+
+
 # #PROFESIONAL PACIENTE
 class Profesional_Paciente(models.Model):
      id_prof_paci = models.BigAutoField(primary_key=True)
      descripcion = models.CharField(max_length=100)
      id_profesional_salud = models.ForeignKey(Profesional_salud, on_delete=models.CASCADE,null=True)
      id_paciente = models.ForeignKey(Paciente, on_delete=models.CASCADE,null=True)
+     tipo_profesional = models.ForeignKey(Usuario, on_delete=models.CASCADE,null=True, limit_choices_to=  Q(id_tipo_user=1)  | Q(id_tipo_user=2) ) 
      def __str__(self):
          return str(self.descripcion)
 
@@ -115,6 +177,92 @@ class Parametros(models.Model):
      Descripcion = models.CharField(max_length=100)
      def __str__(self):
          return str(self.tiempoVocalizacion)
+     
+     
+     
+     
+     
+     
+# #FONOAUDILOGO
+class Fonoaudilogos(models.Model):
+     rut = models.CharField(max_length=100)
+     NombreCompleto = models.CharField(max_length=100)
+     Registro = models.CharField(max_length=100)
+     RegionLaboral = models.CharField(max_length=100)
+     TituloProfesional = models.CharField(max_length=100)
+     preregistrado = models.CharField(max_length=100)
+     def __str__(self):
+         return str(self.rut)     
+     
+     
+     
+##app_documento
+class App_documento(models.Model):
+    id_documento = models.BigAutoField(primary_key=True)
+    titulo = models.CharField(max_length=1000)
+    documento = models.CharField(max_length=100)
+    descripcion = models.CharField(max_length=1000)
+    qr = models.CharField(max_length=100)
+    def __str__(self):
+         return str(self.documento)
+
+##   paciente_Documento -> 
+class paciente_documento(models.Model):
+     id_paciente_documento = models.BigAutoField(primary_key=True)
+     autorizado = models.CharField(max_length=100)
+     documento_id = models.ForeignKey(App_documento, on_delete=models.CASCADE,null=True)
+     paciente_id_paciente = models.ForeignKey(Usuario, on_delete=models.CASCADE,null=True)
+     def __str__(self):
+          return str(self.autorizado)
+
+##   Intensidad
+class Intensidad(models.Model):
+     id = models.BigAutoField(primary_key=True)
+     timestamp = models.CharField(max_length=100)
+     url_audio = models.FileField(upload_to='media')
+     intensidad = models.CharField(max_length=100)
+     mindb = models.CharField(max_length=100)
+     maxdb = models.CharField(max_length=100)
+     comentario = models.CharField(max_length=100)
+     paciente_id_paciente = models.ForeignKey(Paciente, on_delete=models.CASCADE,null=True)
+     def __str__(self):
+         return str(self.id)
+
+## vocalizacion 
+class Vocalizacion(models.Model):
+     id = models.BigAutoField(primary_key=True)
+     timestamp = models.CharField(max_length=100)
+     url_audio = models.FileField(upload_to='media')
+     duracion = models.CharField(max_length=100)
+     bpminute = models.CharField(max_length=100)
+     bpmeasure = models.CharField(max_length=100)
+     comentario = models.CharField(max_length=100)
+     paciente_id_paciente = models.ForeignKey(Paciente, on_delete=models.CASCADE,null=True)
+     def __str__(self):
+         return str(self.id)
+
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+
+
+
+
 
 
 
