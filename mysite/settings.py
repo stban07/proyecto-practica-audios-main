@@ -29,7 +29,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
-STATICFILES_DIRS = ['F:/proyectos/proyecto-practica/app/static']
+
 # Application definition
 
 INSTALLED_APPS = [
