@@ -145,19 +145,28 @@ def registro(request):
 def preregistro(request):
     
     if request.method == 'POST':
-        form = PreRegistroFrom(request.POST)
-        if form.is_valid():
-           
-            rut = form.cleaned_data['rut']
-            print(rut) 
-            form.save()
-            obj = Fonoaudilogos.objects.get(rut=rut)
-            obj.preregistrado = 1
-            obj.save()
-            return render(request, 'app/preregistro.html', {"form":form})
-    else:
-        form = PreRegistroFrom()
+        print("ssss")
+        form = PreRegistroFrom(data=request.POST)
         
+        if form.is_valid():
+            print("ss3ss")
+            rut = form.cleaned_data['rut']
+            tipouser = form.cleaned_data['tipo_user']
+            form.save()
+            print(tipouser)
+            if tipouser == 'FonoAudiologo':
+                obj = Fonoaudilogos.objects.get(rut=rut)
+                obj.preregistrado = 1
+                obj.save()
+            else:
+                form.save()
+            return render(request, 'app/preregistro.html', {"form":form})
+        else:
+            print(form.errors)
+    else:
+        print("ss32221ss")
+        form = PreRegistroFrom()
+        return render(request, 'app/preregistro.html', {"form":form})
         
     if request.method == 'GET':
         form = PreRegistroFrom()
@@ -183,11 +192,11 @@ def preregistrados(request):
             print("sqave")
             return render(request, 'app/preregistrados.html', {"data":data,'form': CustomUserCreationForm()})
         else:
-            print(form.errors)
+            print(formulario.errors)
             # user = authenticate(username = formulario.cleaned_data["username"], password= formulario.cleaned_data["password1"])
             # login(request, user)
-        messages.success(request,"te has registrado correctamente")
-        return render(request, 'app/preregistrados.html')
+        formulario.clean()
+        return render(request, 'app/preregistrados.html', {"data":data,'form': CustomUserCreationForm()})
         
         
     if request.method == 'GET':
@@ -220,9 +229,17 @@ def buscar_rut(request, *args, **kwargs):
             fono = {'Nombre': datos.NombreCompleto, 'rut': datos.rut}
             return JsonResponse(fono)
         elif objetos.count() == 0 and obj.count() == 0:
-            print("SIN REGISTRO EN BD")
-            fono = {'SI':'SI'}
-            return JsonResponse(fono)
+            pre = PreRegistro.objects.filter(rut=rutFono)
+            if pre.count() == 1:
+                fono = {'STOP':'STOP'}
+                print("YA ESTA PREREGISTRADO")
+                return JsonResponse(fono) 
+            else:
+                fono = {'SI':'SI'}
+                print("SIN REGISTRO EN BD")
+                return JsonResponse(fono)
+
+
         elif objetos.count() == 0:
             print("FONOAUDILOGO PREREGISTRADO")
             fono = {'NO':'NO'}

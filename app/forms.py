@@ -19,7 +19,7 @@ class CustomUserCreationForm(UserCreationForm):
 class PreRegistroFrom(forms.ModelForm):
     class Meta():
         model = PreRegistro
-        fields = ('rut','nombre', 'apellido' , 'email', 'telefono','tipo_user')
+        fields = ('rut','nombre', 'apellido'  , 'email', 'telefono','tipo_user')
 
 
 
