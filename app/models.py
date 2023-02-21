@@ -244,7 +244,29 @@ class Vocalizacion(models.Model):
      
      
      
-     
+class AudiosCoeficientes(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    timestamp = models.CharField(max_length=100)
+    idusuario = models.ForeignKey(Usuario, on_delete=models.CASCADE,null=True)
+    F0  = models.CharField(max_length=100)
+    F1  = models.CharField(max_length=100)
+    F2  = models.CharField(max_length=100)
+    F3  = models.CharField(max_length=100)
+    F4  = models.CharField(max_length=100)
+    Intensidad  = models.CharField(max_length=100)
+    HNR  = models.CharField(max_length=100)
+    Local_Jitter  = models.CharField(max_length=100)
+    Local_Absolute_Jitter  = models.CharField(max_length=100)
+    Rap_Jitter  = models.CharField(max_length=100)
+    ppq5_Jitter  = models.CharField(max_length=100)
+    ddp_Jitter = models.CharField(max_length=100)
+    Local_Shimmer = models.CharField(max_length=100)
+    Local_db_Shimmer = models.CharField(max_length=100)
+    apq3_Shimmer = models.CharField(max_length=100)
+    aqpq5_Shimmer = models.CharField(max_length=100)
+    apq11_Shimmer = models.CharField(max_length=100)
+    def __str__(self):
+        return str(self.id)     
      
      
      
