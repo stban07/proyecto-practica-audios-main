@@ -44,7 +44,7 @@ class PreRegistro(models.Model):
         rut = models.CharField(max_length=100)
         nombre = models.CharField(max_length=100)
         apellido = models.CharField(max_length=100) 
-        tipo_user = models.CharField(max_length=100)
+        tipo_user = models.CharField(max_length=100, null=True)
         email = models.CharField(max_length=100)
         telefono = models.CharField(max_length=100)
         def __str__(self):
@@ -77,7 +77,7 @@ class Institucion(models.Model):
 class Usuario(AbstractUser):
        # username = models.CharField(unique=True, max_length=150)
        # password = models.CharField(max_length=128)
-       id_tipo_user = models.ForeignKey(TipoUsuario, on_delete=models.CASCADE,null=True)
+       id_tipo_user = models.ForeignKey(TipoUsuario, on_delete=models.SET_NULL,null=True)
        comuna = models.ForeignKey(Comuna, on_delete=models.SET_NULL,null=True)
        def __str__(self):
            return str(self.id_tipo_user)
@@ -244,14 +244,35 @@ class Vocalizacion(models.Model):
      
      
      
+class AudiosCoeficientes(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    timestamp = models.CharField(max_length=100)
+    idusuario = models.ForeignKey(Usuario, on_delete=models.CASCADE,null=True)
+    F0  = models.CharField(max_length=100)
+    F1  = models.CharField(max_length=100)
+    F2  = models.CharField(max_length=100)
+    F3  = models.CharField(max_length=100)
+    F4  = models.CharField(max_length=100)
+    Intensidad  = models.CharField(max_length=100)
+    HNR  = models.CharField(max_length=100)
+    Local_Jitter  = models.CharField(max_length=100)
+    Local_Absolute_Jitter  = models.CharField(max_length=100)
+    Rap_Jitter  = models.CharField(max_length=100)
+    ppq5_Jitter  = models.CharField(max_length=100)
+    ddp_Jitter = models.CharField(max_length=100)
+    Local_Shimmer = models.CharField(max_length=100)
+    Local_db_Shimmer = models.CharField(max_length=100)
+    apq3_Shimmer = models.CharField(max_length=100)
+    aqpq5_Shimmer = models.CharField(max_length=100)
+    apq11_Shimmer = models.CharField(max_length=100)
+    def __str__(self):
+        return str(self.id)     
      
      
      
      
      
-     
-     
-     
+
      
      
      

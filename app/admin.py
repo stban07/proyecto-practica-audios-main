@@ -135,7 +135,10 @@ admin.site.register(Audio,  AudioAdmin)
 
 
 
-
+# # coeficiente audio
+class AudiosCoeficientesAdmin(admin.ModelAdmin):
+     list_display = ["id", "idusuario", "timestamp","Intensidad","F0"]
+admin.site.register(AudiosCoeficientes,  AudiosCoeficientesAdmin)
 
 
 

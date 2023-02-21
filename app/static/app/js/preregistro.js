@@ -4,7 +4,7 @@
 clickRut = () => {
 
     
-    const input1 = document.querySelector("#rut-input").value;
+    let input1 = document.querySelector("#rut-input").value;
 
     if (!input1) {
         alert("Por favor, rellene todos los campos");
@@ -19,28 +19,40 @@ clickRut = () => {
         if (response.Nombre){
           alert("Hola Eres Fonoaudilogo") 
           $('#rutvalidate').hide();
+          $('#id_tipo_user').hide();
           $('#formulario').show();
+          let tipo_user = document.querySelector("#id_tipo_user");
+          
           let rut = document.querySelector("#id_rut");
           let nombre = document.querySelector("#id_nombre");
           let apellido = document.querySelector("#id_apellido")
-          let tipo_user = document.querySelector("#id_tipo_user");
+          
 
           
           let FullName = response.Nombre
           FullName = FullName.split(" ")
           rut.value = response.rut
+          rut.readOnly = true
           nombre.value = FullName[0]
+          nombre.readOnly = true
           apellido.value = FullName[2]
-          tipo_user.value = "FonoAudilogo"
-          console.log(apellido)
+          apellido.readOnly = true
+          tipo_user.value = "FonoAudiologo"
         }else if (response.NO){
           alert("RUT ya fue registrado/Preregistrado")  
             
         }else if (response.SI){
           alert("No tenemos Informacion del Rut, Complete el formulario de PreRegistro") 
           $('#rutvalidate').hide();
+          $('#id_tipo_user').hide(); 
           $('#formulario').show();
-
+          let input1 = document.querySelector("#rut-input").value;
+          let rut = document.querySelector("#id_rut");
+          rut.value = input1
+          rut.readOnly = true
+          document.querySelector("#id_tipo_user").value = "Desconocido";
+        }else if (response.STOP){
+          alert("RUT ya fue registrado/Preregistrado")  
         }
 
 
@@ -50,6 +62,30 @@ clickRut = () => {
 
 }
 }
+
+
+
+miFormulario.addEventListener("submit", function(event) {
+
+//   if (rut.getAttribute("readonly")) {
+//     rut.removeAttribute("readonly");
+//   } else {
+//     rut.setAttribute("readonly", "readonly");
+// }
+
+
+
+});
+
+
+
+
+
+
+
+
+
+
 
 //agrega . y - a el Rut
  const rutInput = document.querySelector("#rut-input");
