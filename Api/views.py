@@ -4,7 +4,7 @@ from rest_framework import generics
 from .models import ExampleModel
 from .serializers import ExampleModelSerializer, Profesional_saludSerializer, AudioSerializer
 
-from app.models import Institucion, Profesional_salud, TipoUsuario, Usuario, Audio
+from app.models import Institucion, Profesional_salud, TipoUsuario, Usuario, Audio, AudiosCoeficientes
 
 
 import requests
@@ -100,3 +100,40 @@ def audioIntensidad_View(request):
     audios = get_audiosIntensidad()
     context = {'audios': audios}
     return render(request, 'audiosIntensidad.html', context)
+
+
+
+
+# import pandas as pd
+
+# df = pd.read_excel('./archivos_excel/historical.xlsx')  # Lee el archivo Excel
+# datos = df.to_dict('records')  # Convierte el dataframe en una lista de diccionarios
+
+# for diccionario in datos:
+#     print(diccionario)
+
+# print(datos)
+
+import pandas as pd
+from app.models import AudiosCoeficientes
+
+# Lee el archivo excel
+df = pd.read_excel('./archivos_excel/historical.xlsx')
+
+
+# Convertir el DataFrame seleccionado a una lista de diccionarios
+data = df.to_dict('records')
+
+# Guardar los datos en la base de datos
+for row in data:
+    audios_coeficientes = AudiosCoeficientes(
+        id_user=row['id user'],
+        timestamp=row['Timestamp'],
+        F0=row['F0'],
+        F1=row['F1'],
+        F2=row['F2'],
+        F3=row['F3'],
+        F4=row['F4'],
+        Intensidad=row['Intensidad'],
+    )
+    audios_coeficientes.save()

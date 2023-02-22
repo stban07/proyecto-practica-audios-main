@@ -18,8 +18,6 @@ from django.db.models import Count
 
 
 
-
-
 def validate(request):
     if request.is_anonymous:
         print(request)

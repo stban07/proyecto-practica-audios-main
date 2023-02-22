@@ -245,9 +245,9 @@ class Vocalizacion(models.Model):
      
      
 class AudiosCoeficientes(models.Model):
-    id = models.BigAutoField(primary_key=True)
+    id_user = models.CharField(max_length=100)
+    nombre_archivo = models.CharField(max_length=100)
     timestamp = models.CharField(max_length=100)
-    idusuario = models.ForeignKey(Usuario, on_delete=models.CASCADE,null=True)
     F0  = models.CharField(max_length=100)
     F1  = models.CharField(max_length=100)
     F2  = models.CharField(max_length=100)
