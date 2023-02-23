@@ -17,7 +17,7 @@ from django.contrib.auth.decorators import user_passes_test
 from django.db.models import Count
 
 
-
+    
 
 
 def validate(request):
@@ -40,6 +40,62 @@ def index(request):
         user_type = str(request.user)
     print(user_type)
     return render(request, 'app/index.html',{"user_type":user_type} )
+
+
+
+
+
+@user_passes_test(validate)
+def grbas(request):
+    if request.method == 'GET':
+        username = str(request.user.username)
+        rut = str(request.user.rut)
+        user_type = str(request.user.id_tipo_user)
+        formulario = GrbasFrom(initial={'id_fonoaudilogo': username})
+        
+        data = Profesional_salud.objects.filter(rut_profesional = request.user.rut)
+        data.count()
+        if data.count() == 1:
+            form = Grbas.objects.filter(id_fonoaudilogo = username )
+            id = data.values('id_profesional').first()
+            id = id['id_profesional']
+            pacientes = Profesional_Paciente.objects.filter(id_profesional_salud = id)
+            print(pacientes)
+            return render(request, 'app/grbas.html',{"user_type":user_type, "paciente":pacientes, "form":form, "formulario":formulario})
+        else:
+            print("no tiene pacientes")
+            return render(request, 'app/grbas.html',{"user_type":user_type})       
+
+      
+    if request.method == 'POST':
+        print("GUARDADO")
+        form = GrbasFrom(data=request.POST)
+        if form.is_valid():
+            print("GUARDADO")
+
+            form.save()
+            form.clean()
+            return redirect("grbas")
+        else:
+            print(form.errors)
+            
+    # username = str(request.user.username)
+    # rut = str(request.user.rut)
+    # user_type = str(request.user.id_tipo_user)
+    # formulario = GrbasFrom(initial={'id_fonoaudilogo': username})
+    # form = Grbas.objects.filter()
+    # data = Profesional_salud.objects.filter(rut_profesional = request.user.rut)
+    # data.count()
+    # if data.count() == 1:
+    #     id = data.values('id_profesional').first()
+    #     id = id['id_profesional']
+    #     pacientes = Profesional_Paciente.objects.filter(id_profesional_salud = id)
+    #     print(pacientes)
+    #     return render(request, 'app/grbas.html',{"user_type":user_type, "paciente":pacientes, "form":form, "formulario":formulario})
+    # else:
+    #     print("no tiene pacientes")
+    #     return render(request, 'app/grbas.html',{"user_type":user_type})       
+        
 
 
 

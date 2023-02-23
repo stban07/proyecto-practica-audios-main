@@ -13,11 +13,11 @@ from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 
 
 class UserAdmin(BaseUserAdmin): 
-    list_display = ('id','username','email','first_name', 'last_name', 'id_tipo_user') 
+    list_display = ('id','username','email','first_name', 'last_name', 'id_tipo_user','rut') 
     list_filter = ('email',) 
     fieldsets = ( 
         (None,{'fields': ('username','email', 'password')}), 
-        ('Informacion personal', {'fields': ( 'first_name', 'last_name', 'id_tipo_user')}), 
+        ('Informacion personal', {'fields': ( 'first_name', 'last_name', 'id_tipo_user','rut')}), 
         ('Permisos Django', {'fields': ('is_staff', 'is_active')}) 
  
     ) 
@@ -25,7 +25,7 @@ class UserAdmin(BaseUserAdmin):
     add_fieldsets = ( 
         (None, { 
             'classes':('wide',), 
-            'fields':('id_tipo_user','username', 'first_name', 'last_name', 'email', 'password1', 'password2')
+            'fields':('id_tipo_user','rut'  ,'username', 'first_name', 'last_name', 'email', 'password1', 'password2')
         }), 
     ) 
 
@@ -76,7 +76,7 @@ admin.site.register(Parametros, ParametroAdmin)
 
 # #PACIENTE
 class PacienteAdmin(admin.ModelAdmin):
-    list_display = ["idPaciente","rut_paciente", "telegram_paciente","diabetes","hipertencion","Observacion","id_usuario"]  # , "bpm", "beats", "timestamp"
+    list_display = ["idPaciente", "telegram_paciente","diabetes","hipertencion","Observacion","id_usuario"]  # , "bpm", "beats", "timestamp"
 admin.site.register(Paciente, PacienteAdmin)
 
 
@@ -103,13 +103,16 @@ class PreRegistroAdmin(admin.ModelAdmin):
 admin.site.register(PreRegistro, PreRegistroAdmin)
 
 
+class GrbasAdmin(admin.ModelAdmin):
+     list_display = ["id","id_fonoaudilogo", "id_paciente","timestamp","G","R","B","A","S","Comentario"] 
+admin.site.register(Grbas, GrbasAdmin)
 
 
 
 
 # #PROFESIONAL SALUD
 class ProfesionalAdmin(admin.ModelAdmin):
-     list_display = ["id_profesional","rut_profesional", "id_usuario","institucion_id"] 
+     list_display = ["id_profesional", "tipo_profesional","institucion_id"] 
 admin.site.register(Profesional_salud, ProfesionalAdmin)
 
 
@@ -142,10 +145,16 @@ admin.site.register(AudiosCoeficientes,  AudiosCoeficientesAdmin)
 
 
 
+# # coeficiente audio
+class DiabetesAdmin(admin.ModelAdmin):
+     list_display = ["id", "tipo_diabetes"]
+admin.site.register(Diabetes,  DiabetesAdmin)
 
 
-
-
+# # coeficiente audio
+class HipertensionAdmin(admin.ModelAdmin):
+     list_display = ["id", "estado_hipertension"]
+admin.site.register(Hipertension,  HipertensionAdmin)
 
 
 

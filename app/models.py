@@ -77,10 +77,16 @@ class Institucion(models.Model):
 class Usuario(AbstractUser):
        # username = models.CharField(unique=True, max_length=150)
        # password = models.CharField(max_length=128)
+       rut =  models.CharField(max_length=100)
        id_tipo_user = models.ForeignKey(TipoUsuario, on_delete=models.SET_NULL,null=True)
        comuna = models.ForeignKey(Comuna, on_delete=models.SET_NULL,null=True)
+       
+       def rutt(self):
+           return str(self.rut)
+
        def __str__(self):
-           return str(self.id_tipo_user)
+           return str(self.id) + " " + str(self.username)
+       
 
 
 
@@ -100,17 +106,17 @@ class Hipertension(models.Model):
      
 # # # # #PACIENTE
 class Paciente(models.Model):
-       idPaciente = models.BigAutoField(primary_key=True)
-       rut_paciente = models.CharField(max_length=100)
+       idPaciente = models.BigAutoField(primary_key=True)  
+       #rut_paciente =  models.CharField(max_length=100)                    
        telegram_paciente = models.CharField(max_length=100)
        diabetes = models.ForeignKey(Diabetes, on_delete=models.CASCADE,null=True)
        hipertencion = models.ForeignKey(Hipertension, on_delete=models.CASCADE,null=True)
        Observacion = models.CharField(max_length=100)
-       id_usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE,null=True, limit_choices_to={'id_tipo_user':1}) 
+       id_usuario = models.ForeignKey(Usuario,on_delete=models.CASCADE, related_name='relacion_tipouser', null=True, limit_choices_to={'id_tipo_user':1}) 
        def __str__(self):
-           return str(self.rut_paciente)
+           return str(self.id_usuario)
        
-    
+  #  models.ForeignKey(  Usuario,  related_name='relacion_rut', to_field="rut" ,on_delete=models.CASCADE,null=True, unique=True)  
 # #FAMILIAR
 class Familiar(models.Model):
      id_familiar = models.BigAutoField(primary_key=True)
@@ -135,7 +141,7 @@ class Familiar_paciente(models.Model):
 class Profesional_salud(models.Model):
      id_profesional = models.BigAutoField(primary_key=True)
      rut_profesional = models.CharField(max_length=100)
-     id_usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE,null=True)
+     tipo_profesional = models.ForeignKey(TipoUsuario, on_delete=models.CASCADE,null=True)
      institucion_id = models.ForeignKey(Institucion, on_delete=models.CASCADE,null=True)
      def __str__(self):
          return str(self.rut_profesional)
@@ -151,7 +157,7 @@ class Profesional_Paciente(models.Model):
      descripcion = models.CharField(max_length=100)
      id_profesional_salud = models.ForeignKey(Profesional_salud, on_delete=models.CASCADE,null=True)
      id_paciente = models.ForeignKey(Paciente, on_delete=models.CASCADE,null=True)
-     tipo_profesional = models.ForeignKey(Usuario, on_delete=models.CASCADE,null=True, limit_choices_to=  Q(id_tipo_user=1)  | Q(id_tipo_user=2) ) 
+     tipo_profesional = models.ForeignKey(TipoUsuario, on_delete=models.CASCADE,null=True) 
      def __str__(self):
          return str(self.descripcion)
 
@@ -270,8 +276,21 @@ class AudiosCoeficientes(models.Model):
      
      
      
-     
-     
+      
+##   GRBAS
+class Grbas(models.Model):
+     id = models.BigAutoField(primary_key=True)
+     id_fonoaudilogo = models.CharField(max_length=100)
+     id_paciente =  models.CharField(max_length=100)
+     timestamp = models.CharField(max_length=100)
+     G = models.CharField(max_length=100)  
+     R = models.CharField(max_length=100)   
+     B = models.CharField(max_length=100)   
+     A = models.CharField(max_length=100)
+     S = models.CharField(max_length=100)
+     Comentario = models.CharField(max_length=100)
+     def __str__(self):
+         return str(self.id)   
 
      
      

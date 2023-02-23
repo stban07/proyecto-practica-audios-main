@@ -41,7 +41,7 @@
                         </li>
                         {%  elif user_type == 'Enfermera' or  user_type == 'Fonoaudilogo' %}
                         <li class="current">
-
+                            <li><a href="{% url 'grbas' %}" >GRBA</a></li>
                             <li><a href="{% url 'logout' %}">Cerrar Sesion</a></li>
                         </li>
                         {%  elif user_type == 'Familiar'%}

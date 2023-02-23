@@ -8,7 +8,7 @@ class CustomUserCreationForm(UserCreationForm):
     
     class Meta(UserCreationForm.Meta):
         model = Usuario
-        fields =  ('email','username', 'first_name', 'last_name', 'id_tipo_user', 'password1', 'password2')
+        fields =  ('email','username', 'first_name', 'last_name', 'id_tipo_user', 'password1', 'password2','rut')
 
 
 
@@ -22,7 +22,10 @@ class PreRegistroFrom(forms.ModelForm):
         fields = ('rut','nombre', 'apellido'  , 'email', 'telefono','tipo_user')
 
 
-
+class GrbasFrom(forms.ModelForm):
+    class Meta():
+        model = Grbas
+        fields = ('id_fonoaudilogo','id_paciente','G','R','B','A','S','Comentario')
 
 
 

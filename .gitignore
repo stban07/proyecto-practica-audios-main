@@ -1,1 +1,7 @@
 .env
+app/migrations/0001_initial.py
+app/migrations/0002_usuario_rut.py
+app/migrations/0003_remove_profesional_salud_id_usuario_and_more.py
+app/migrations/0004_alter_profesional_paciente_tipo_profesional.py
+app/migrations/0005_grbas_alter_profesional_paciente_tipo_profesional.py
+app/migrations/__init__.py

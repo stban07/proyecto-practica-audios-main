@@ -3,7 +3,7 @@ clickpreregistrados = (a) => {
 let ver = document.getElementById(a)
 let elementos = ver.getElementsByTagName("td")
 console.log(elementos)
-// document.getElementById("id_username").value = elementos[0].innerHTML
+document.getElementById("id_rut").value = elementos[0].innerHTML
 document.getElementById("id_first_name").value = elementos[1].innerHTML
 document.getElementById("id_first_name").readOnly = true
 document.getElementById("id_last_name").value = elementos[2].innerHTML
