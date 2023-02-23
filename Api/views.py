@@ -4,7 +4,9 @@ from rest_framework import generics
 from .models import ExampleModel
 from .serializers import ExampleModelSerializer, Profesional_saludSerializer, AudioSerializer
 
-from app.models import Institucion, Profesional_salud, TipoUsuario, Usuario, Audio, AudiosCoeficientes
+from app.models import Institucion, Profesional_salud, TipoUsuario, Usuario, Audio
+
+# from app.models import Institucion, Profesional_salud, TipoUsuario, Usuario, Audio, AudiosCoeficientes
 
 
 import requests
@@ -124,10 +126,13 @@ df = pd.read_excel('./archivos_excel/historical.xlsx')
 # Convertir el DataFrame seleccionado a una lista de diccionarios
 data = df.to_dict('records')
 
+
 # Guardar los datos en la base de datos
 for row in data:
+    usuario = Usuario.objects.get(id=row['idusuario'])
     audios_coeficientes = AudiosCoeficientes(
-        id_user=row['id user'],
+        idusuario=usuario,
+        nombre_archivo=row['Nombre archivo'],
         timestamp=row['Timestamp'],
         F0=row['F0'],
         F1=row['F1'],
@@ -135,5 +140,17 @@ for row in data:
         F3=row['F3'],
         F4=row['F4'],
         Intensidad=row['Intensidad'],
+        HNR  = row['HNR'],
+        Local_Jitter  = row['Local Jitter'],
+        Local_Absolute_Jitter  = row['Local Absolute Jitter'],
+        Rap_Jitter  = row[' Rap Jitter'],
+        ppq5_Jitter  = row[' ppq5 Jitter'],
+        ddp_Jitter = row['ddp Jitter'],
+        Local_Shimmer = row['Local Shimmer'],
+        Local_db_Shimmer = row['Local db Shimmer'],
+        apq3_Shimmer = row['apq3 Shimmer'],
+        aqpq5_Shimmer = row['aqpq5 Shimmer'],
+        apq11_Shimmer = row['apq11 Shimmer']
+
     )
     audios_coeficientes.save()

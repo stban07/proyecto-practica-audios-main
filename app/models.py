@@ -80,7 +80,7 @@ class Usuario(AbstractUser):
        id_tipo_user = models.ForeignKey(TipoUsuario, on_delete=models.SET_NULL,null=True)
        comuna = models.ForeignKey(Comuna, on_delete=models.SET_NULL,null=True)
        def __str__(self):
-           return str(self.id_tipo_user)
+           return str(self.id)
 
 
 
@@ -245,7 +245,7 @@ class Vocalizacion(models.Model):
      
      
 class AudiosCoeficientes(models.Model):
-    id_user = models.CharField(max_length=100)
+    idusuario= models.ForeignKey(Usuario, on_delete=models.CASCADE,null=True)
     nombre_archivo = models.CharField(max_length=100)
     timestamp = models.CharField(max_length=100)
     F0  = models.CharField(max_length=100)

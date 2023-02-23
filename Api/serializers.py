@@ -1,7 +1,8 @@
 from rest_framework import serializers
 from .models import ExampleModel
 
-from app.models import Profesional_salud, Usuario, TipoUsuario, Audio, AudiosCoeficientes
+from app.models import Profesional_salud, Usuario, TipoUsuario, Audio
+# from app.models import Profesional_salud, Usuario, TipoUsuario, Audio, AudiosCoeficientes
 
 class ExampleModelSerializer(serializers.ModelSerializer):
     class Meta:

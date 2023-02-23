@@ -32,7 +32,8 @@ class UserAdmin(BaseUserAdmin):
 
 
 admin.site.register(Usuario, UserAdmin)
-
+admin.site.register(Hipertension)
+admin.site.register(Diabetes)
 
 
 # #Region
@@ -135,9 +136,9 @@ admin.site.register(Audio,  AudioAdmin)
 
 
 
-# # coeficiente audio
+# coeficiente audio
 class AudiosCoeficientesAdmin(admin.ModelAdmin):
-     list_display = ["id", "id_user", "timestamp","Intensidad","F0"]
+     list_display = ["id", "idusuario", "timestamp","Intensidad","F0"]
 admin.site.register(AudiosCoeficientes,  AudiosCoeficientesAdmin)
 
 
