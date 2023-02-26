@@ -16,11 +16,18 @@
         <!-- Header -->
         <div id="header-wrapper">
             <header id="header" class="container">
+
+                {% if request.user.is_superuser %}
                 <!-- Logo -->
+                <div id="logo">
+                    <h1><a href="{% url 'index' %}">RTDF</a></h1>
+                </div>
+                {%  else  %}
                 <div id="logo">
                     <h1><a href="{% url 'index' %}">RTDF</a></h1>
                     <span>Recursos Terapeuticos Digitales Para Fonoaudiologia</span>
                 </div>
+                {% endif %}
                 <!-- Nav -->
                 <nav id="nav">
                     <ul>
@@ -35,6 +42,9 @@
                         </li>
                         {%  elif request.user.is_superuser%}
                         <li class="current">
+                            <li><a href="{% url 'rasati' %}" >RASATI</a></li>
+                            <li><a href="{% url 'grbas' %}" >GRBA</a></li>
+                            <li><a href="{% url 'grbas' %}" >ESV</a></li>
                             <li><a href="{% url 'registro' %}" >Registrar Usuarios</a></li>
                             <li><a href="{% url 'preregistrados' %}" >Usuarios Pre-Registrados</a></li>
                             <li><a href="{% url 'logout' %}">Cerrar Sesion</a></li>
@@ -42,6 +52,8 @@
                         {%  elif user_type == 'Enfermera' or  user_type == 'Fonoaudilogo' %}
                         <li class="current">
                             <li><a href="{% url 'grbas' %}" >GRBA</a></li>
+                            <li><a href="{% url 'rasati' %}" >RASATI</a></li>
+                            <li><a href="{% url 'grbas' %}" >ESV</a></li>
                             <li><a href="{% url 'logout' %}">Cerrar Sesion</a></li>
                         </li>
                         {%  elif user_type == 'Familiar'%}

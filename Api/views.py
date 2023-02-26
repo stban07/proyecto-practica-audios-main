@@ -56,7 +56,7 @@ class AudioList(generics.ListCreateAPIView):
         idusuario = self.request.query_params.get('institucion_id')
         url_audio = self.request.query_params.get('url_audio')
         queryset = Audio.objects.all()
-        
+
 
         if url_audio:
             queryset = queryset.filter(url_audio__endswith=url_audio)
@@ -112,45 +112,45 @@ def audioIntensidad_View(request):
 # datos = df.to_dict('records')  # Convierte el dataframe en una lista de diccionarios
 
 # for diccionario in datos:
-#     print(diccionario)
+#      print(diccionario)
 
 # print(datos)
 
-import pandas as pd
-from app.models import AudiosCoeficientes
+# import pandas as pd
+# from app.models import AudiosCoeficientes
 
-# Lee el archivo excel
-df = pd.read_excel('./archivos_excel/historical.xlsx')
-
-
-# Convertir el DataFrame seleccionado a una lista de diccionarios
-data = df.to_dict('records')
+# # # Lee el archivo excel
+# df = pd.read_excel('./archivos_excel/historical.xlsx')
 
 
-# Guardar los datos en la base de datos
-for row in data:
-    usuario = Usuario.objects.get(id=row['idusuario'])
-    audios_coeficientes = AudiosCoeficientes(
-        idusuario=usuario,
-        nombre_archivo=row['Nombre archivo'],
-        timestamp=row['Timestamp'],
-        F0=row['F0'],
-        F1=row['F1'],
-        F2=row['F2'],
-        F3=row['F3'],
-        F4=row['F4'],
-        Intensidad=row['Intensidad'],
-        HNR  = row['HNR'],
-        Local_Jitter  = row['Local Jitter'],
-        Local_Absolute_Jitter  = row['Local Absolute Jitter'],
-        Rap_Jitter  = row[' Rap Jitter'],
-        ppq5_Jitter  = row[' ppq5 Jitter'],
-        ddp_Jitter = row['ddp Jitter'],
-        Local_Shimmer = row['Local Shimmer'],
-        Local_db_Shimmer = row['Local db Shimmer'],
-        apq3_Shimmer = row['apq3 Shimmer'],
-        aqpq5_Shimmer = row['aqpq5 Shimmer'],
-        apq11_Shimmer = row['apq11 Shimmer']
+# # # Convertir el DataFrame seleccionado a una lista de diccionarios
+# data = df.to_dict('records')
 
-    )
-    audios_coeficientes.save()
+
+# # Guardar los datos en la base de datos
+# for row in data:
+#      usuario = Usuario.objects.get(id=row['idusuario'])
+#      audios_coeficientes = AudiosCoeficientes(
+#          idusuario=usuario,
+#          nombre_archivo=row['Nombre archivo'],
+#          timestamp=row['Timestamp'],
+#          F0=row['F0'],
+#          F1=row['F1'],
+#          F2=row['F2'],
+#          F3=row['F3'],
+#          F4=row['F4'],
+#          Intensidad=row['Intensidad'],
+#          HNR  = row['HNR'],
+#          Local_Jitter  = row['Local Jitter'],
+#          Local_Absolute_Jitter  = row['Local Absolute Jitter'],
+#          Rap_Jitter  = row[' Rap Jitter'],
+#          ppq5_Jitter  = row[' ppq5 Jitter'],
+#          ddp_Jitter = row['ddp Jitter'],
+#          Local_Shimmer = row['Local Shimmer'],
+#          Local_db_Shimmer = row['Local db Shimmer'],
+#          apq3_Shimmer = row['apq3 Shimmer'],
+#          aqpq5_Shimmer = row['aqpq5 Shimmer'],
+#          apq11_Shimmer = row['apq11 Shimmer']
+
+#      )
+#      audios_coeficientes.save()

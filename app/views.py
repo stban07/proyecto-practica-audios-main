@@ -36,6 +36,34 @@ def index(request):
     #print(duplicates)
     if request.user.is_authenticated == True:
         user_type = str(request.user.id_tipo_user)
+        print(user_type)
+        usuarios = Usuario.objects.all()
+        paciente = Paciente.objects.all()
+        profesional = Profesional_salud.objects.all() 
+        if request.user.is_superuser:
+            print(usuarios)
+            return render(request, 'app/index.html',{"user_type":user_type, "usuarios":usuarios, "paciente":paciente, "profesional":profesional} )
+        elif user_type == "Fonoaudilogo":
+            
+            data = Profesional_salud.objects.filter(rut_profesional = request.user.rut)
+            
+            id = data.values('id_profesional').first()
+            id = id['id_profesional']
+            pacientes = Profesional_Paciente.objects.filter(id_profesional_salud = id)
+            print(pacientes)
+            # id = pacientes.values('id_paciente').first()
+            # print(id)
+            
+        
+            
+            books = Profesional_Paciente.objects.prefetch_related('id_paciente').filter(id_profesional_salud = id )
+            pacientes = books
+            
+            d = Paciente.objects.all()
+            print(d)
+            
+            
+            return render(request, 'app/index.html',{"user_type":user_type, "pacientes":pacientes} )
     else:
         user_type = str(request.user)
     print(user_type)
@@ -63,9 +91,12 @@ def grbas(request):
             print(pacientes)
             return render(request, 'app/grbas.html',{"user_type":user_type, "paciente":pacientes, "form":form, "formulario":formulario})
         else:
-            print("no tiene pacientes")
-            return render(request, 'app/grbas.html',{"user_type":user_type})       
-
+            if request.user.is_superuser:
+                form = Grbas.objects.all()
+                return render(request, 'app/grbas.html',{"user_type":user_type, "form":form }) 
+            else:    
+                print("no tiene pacientes")
+                return render(request, 'app/grbas.html',{"user_type":user_type})       
       
     if request.method == 'POST':
         print("GUARDADO")
@@ -79,23 +110,64 @@ def grbas(request):
         else:
             print(form.errors)
             
-    # username = str(request.user.username)
-    # rut = str(request.user.rut)
-    # user_type = str(request.user.id_tipo_user)
-    # formulario = GrbasFrom(initial={'id_fonoaudilogo': username})
-    # form = Grbas.objects.filter()
-    # data = Profesional_salud.objects.filter(rut_profesional = request.user.rut)
-    # data.count()
-    # if data.count() == 1:
-    #     id = data.values('id_profesional').first()
-    #     id = id['id_profesional']
-    #     pacientes = Profesional_Paciente.objects.filter(id_profesional_salud = id)
-    #     print(pacientes)
-    #     return render(request, 'app/grbas.html',{"user_type":user_type, "paciente":pacientes, "form":form, "formulario":formulario})
-    # else:
-    #     print("no tiene pacientes")
-    #     return render(request, 'app/grbas.html',{"user_type":user_type})       
+
+
+
+@user_passes_test(validate)
+def rasati(request):
+    
+    if request.method == 'GET':
+
         
+        username = str(request.user.username)
+        rut = str(request.user.rut)
+        user_type = str(request.user.id_tipo_user)
+        formulario = RasatiFrom(initial={'id_fonoaudilogo': username})
+        
+        data = Profesional_salud.objects.filter(rut_profesional = request.user.rut)
+        data.count()
+        if data.count() == 1:
+            form = Rasati.objects.filter(id_fonoaudilogo = username )
+            id = data.values('id_profesional').first()
+            id = id['id_profesional']
+            pacientes = Profesional_Paciente.objects.filter(id_profesional_salud = id)
+            
+            return render(request, 'app/rasati.html',{"user_type":user_type, "paciente":pacientes, "form":form, "formulario":formulario})
+        else:
+            if request.user.is_superuser:
+                form = Rasati.objects.all()
+                return render(request, 'app/rasati.html',{"user_type":user_type, "form":form }) 
+            else:    
+                print("no tiene pacientes")
+                return render(request, 'app/rasati.html',{"user_type":user_type})       
+
+      
+    if request.method == 'POST':
+        print("GUARDADO")
+        form = RasatiFrom(data=request.POST)
+        if form.is_valid():
+            print("GUARDADO")
+
+            form.save()
+            form.clean()
+            print("guardadoooo")
+            return redirect("rasati")
+        else:
+            print(form.errors)
+            
+
+
+
+
+
+
+
+
+
+
+
+
+ 
 
 
 
@@ -122,59 +194,16 @@ class IntensidadView(View):
         return render(request, 'app/intensidad.html')
 
 
-# ############### MEDIDOR DECIBEL #####################
 
 
-# def medidor(request):
-#     return render(request, 'app/medidor-sonido.html')
-
-# ############### oscilograma ####################
 
 
-# ############### EJERCICIO PALABRAS#####################
 
 
-# def eva_param_func(request):
-#     def get(self, request, *args, **kwargs):
-#         print(request.user.id)
-#         return render(request, 'app/eva_param_func.html')
-
-#     def post(self, request, *args, **kwargs):
-#         print("hola estoy en el post")
-#     return render(request, 'app/eva_param_func.html')
-
-# ################## EJERCICIO LECTURA#######################
 
 
-# def eva_param_text(request):
-#     return render(request, 'app/eva_param_text.html')
-
-# ################## CRUCIGRAMA########################
 
 
-# def crucigrama(request):
-#     return render(request, 'app/crucigrama.html')
-
-# ###################### MEMORICE #######################
-
-
-# def memorama(request):
-#     data = {
-#         'form': MemoriceForm,
-#     }
-#     if request.method == 'POST':
-#         formulario = MemoriceForm(data=request.POST)
-#         if formulario.is_valid():
-#             post = formulario.save(commit=False)
-#             post.acierto = request.POST["acierto"]
-#             post.tiempo = request.POST["tiempo"]
-#             post.movimientos = request.POST["movimientos"]
-#             post.usuario_id = request.user.id
-#             formulario.save()
-#         else:
-#             formulario = MemoriceForm()
-#     return render(request, 'app/memorama.html', data)
-#     # return render(request, 'app/memorama.html')
 
 
 

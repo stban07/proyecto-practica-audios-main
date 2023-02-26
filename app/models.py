@@ -291,6 +291,23 @@ class Grbas(models.Model):
      Comentario = models.CharField(max_length=100)
      def __str__(self):
          return str(self.id)   
+     
+     
+##   RASATI
+class Rasati(models.Model):
+     id = models.BigAutoField(primary_key=True)
+     id_fonoaudilogo = models.CharField(max_length=100)
+     id_paciente =  models.CharField(max_length=100)
+     timestamp = models.CharField(max_length=100)
+     R = models.CharField(max_length=100)  
+     A = models.CharField(max_length=100)   
+     S = models.CharField(max_length=100)   
+     A = models.CharField(max_length=100)
+     T = models.CharField(max_length=100)
+     I = models.CharField(max_length=100)
+     Comentario = models.CharField(max_length=100)
+     def __str__(self):
+         return str(self.id)   
 
      
      

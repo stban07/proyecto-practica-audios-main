@@ -26,6 +26,14 @@ class GrbasFrom(forms.ModelForm):
     class Meta():
         model = Grbas
         fields = ('id_fonoaudilogo','id_paciente','G','R','B','A','S','Comentario')
+        
+        
+        
+        
+class RasatiFrom(forms.ModelForm):
+    class Meta():
+        model = Rasati
+        fields = ('id_fonoaudilogo','id_paciente','R','A','S','A','T','I','Comentario')
 
 
 
