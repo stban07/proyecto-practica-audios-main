@@ -6,6 +6,7 @@ from django.http import HttpResponse, JsonResponse
 from django.views.generic import View
 from django.views.decorators.csrf import csrf_exempt
 from django.core.files.storage import default_storage
+from django.core.files.base import ContentFile
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login
@@ -18,7 +19,6 @@ from django.db.models import Count
 
 
     
-
 
 def validate(request):
     if request.is_anonymous:
@@ -263,7 +263,6 @@ def preregistro(request):
 @csrf_exempt    
 def preregistrados(request):
     
-    
     data = PreRegistro.objects.all()
     
     
@@ -295,9 +294,7 @@ def preregistrados(request):
     
     
     
-       
-    
-    
+          
     
 @csrf_exempt
 def buscar_rut(request, *args, **kwargs):
@@ -333,11 +330,6 @@ def buscar_rut(request, *args, **kwargs):
 
 
 
-
-
-
-
-
 # ###################### LOGICA PARA GUARDAR AUDIO #######################
 @csrf_exempt
 def save_audio(request, *args, **kwargs):
@@ -347,43 +339,29 @@ def save_audio(request, *args, **kwargs):
         print(request.user.username)
         now = datetime.now()
         current_time = now.strftime("%d-%m-%Y %H:%M.%S")
-        hms = now.strftime("%H:%M.%S")
+        hms = now.strftime("%H-%M-%S")
         token = get_random_string(length=2)
         nombre = request.POST.get('string')
-        archivo = f"{token}_{hms}_{nombre}.mp3"
+        archivo = f"{token}_{hms}_{nombre}.wav"
         audio_file = request.FILES.get('file')
+        #audio=AudioSegment.from_file(audio_file,format="webm")
+        #audio_file=audio.export("archivo.mp3",format="mp3")
+
         #Guarda el archivo
         arc = default_storage.save(archivo,audio_file)
         
         document = Audio.objects.create(url_audio=arc,timestamp=current_time,idusuario=request.user)
         document.save()
         return HttpResponse("200")
-
-
     return render(request, 'app/vocalizacion.html')
-
 ########################## VOCALIZACION ################################
 ############## CONFIGURAR CORRECTAMENTE PARA GUARDAR#####################
-
-
-
-
-
-
-
-
-
 
 class VocalizacionView(View):
     def post(self, request):
         return render(request, 'app/vocalizacion.html')
-    
-    
-    
-    
-    
-    
-    
+
+
 class LoginView(View):
     def get(self, request, *args, **kwargs):
         print("HOLA")

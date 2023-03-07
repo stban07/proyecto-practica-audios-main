@@ -1,4 +1,3 @@
-
 //INICIO DE FUNCION PARA GRABAR AUDIO CON JS
 const init = () => {
     //PREGUNTA SI SOPORTA MICROFONO CON MEDIADEVICES
@@ -80,12 +79,17 @@ const init = () => {
         navigator.mediaDevices.getUserMedia({
             audio: {
                 deviceId: $listaDeDispositivos.value,
-            }
+            },
+            video: false
         })
             .then(
-                stream => { 
+                stream => {
+                    const options = {
+                        audioBitsPerSecond: 128000,
+                        mimeType: "audio/webm;codecs=opus",
+                      };
                     a = document.querySelector("#segundos").textContent; 
-                    mediaRecorder = new MediaRecorder(stream);                      // Comenzar a grabar con el stream
+                    mediaRecorder = new MediaRecorder(stream,options);                      // Comenzar a grabar con el stream
                     mediaRecorder.start();
                     ///////////
                     if(op === true){
@@ -138,27 +142,27 @@ const init = () => {
         $duracion.textContent = "La grabacion comenzara una vez precione el boton";
     }
 
-     const stop = () => {
+    const stop = () => {
         if (!mediaRecorder) return
             detenerConteo();
             mediaRecorder.stop();
             mediaRecorder = null;
         $btnComenzarGrabacion.textContent = "COMENZAR";
-     }
+    }
 
 
-     const enviarAudio = (fragmentosDeAudio,name) => {
+    const enviarAudio = (fragmentosDeAudio,name) => {
 
-        var blob = new Blob(fragmentosDeAudio);
-
+        var blob = new Blob(fragmentosDeAudio,{ type: "audio/webm;codecs=opus" });
+        fragmentosDeAudio=[];
         // Crea un nuevo objeto FormData
         const formData = new FormData();
 
 
-        var filer = new File([blob], "miaudio.mp3", { type: "audio/mp3" });
-        formData.append('file', filer);
+        var filer = new File([blob], "miaudio.webm", { type: "audio/webm" });
+        formData.append('file', blob);
         formData.append('string', name);
-
+        
         // Hace una solicitud POST al servidor Django usando el método fetch
          fetch('/save_audio/', {
          method: 'POST',

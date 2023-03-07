@@ -24,6 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'l&8=+mo)xfde5q=m+(l41*6o5a!a83s%$8ly1_8u0&1n!ne3&_'
 
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -87,8 +88,9 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 #     'default': {
 #         'ENGINE': 'django.db.backends.sqlite3',
 #         'NAME': BASE_DIR / 'db.sqlite3',
+        
 #     }
-# }
+#}
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',

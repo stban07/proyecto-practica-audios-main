@@ -12,6 +12,9 @@
     <div class="selector-audio">
         <select name="listaDeDispositivos" id="listaDeDispositivos"></select>
     </div>
+    <div class="audio">
+        <audio controls playsinline></audio>
+    </div>
 </div>
 
 
@@ -152,7 +155,8 @@
 </div>
 {% block js %}
 {% comment %} <script src="{% static 'app/js/oscilagrama/metronomo.js'  %}"></script> {% endcomment %}
-<script src="{% static 'app/js/microfono.js'    %}"></script>
+<script src="{% static 'app/js/RecordRTC.js' %}"></script>
+<script src="{% static 'app/js/microfono_utils.js'    %}?1"></script>
 <script src="{% static 'app/js/oscilagrama/oscilagrama.js'  %}"></script>
 <script src="{% static 'app/js/oscilagrama/chart.js'        %}"></script>
 <script src="{% static 'app/js/oscilagrama/data.js'         %}"></script>

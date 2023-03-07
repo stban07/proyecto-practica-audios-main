@@ -76,10 +76,15 @@
 
 </div>
 
-<div class="container-mic" style="display:none;">
+<div class="container-mic" style="display:block;">
     <div class="selector-audio">
         <select name="listaDeDispositivos" id="listaDeDispositivos"></select>
     </div>
+    <div class="audio">
+        <audio controls playsinline></audio>
+    </div>
+
+    <hr>
 </div>
 
 <br>
@@ -87,9 +92,9 @@
 <br>
 
 
-
-
-<script src="{% static 'app/js/microfono.js' %}"></script> 
+<script src="{% static 'app/js/RecordRTC.js' %}"></script>
+<script src="https://unpkg.com/wavefile"></script>
+<script src="{% static 'app/js/microfono_utils.js' %}?1"></script> 
 <script src="{% static 'app/js/metronomo.js' %}"></script>
 <script src="{% static 'app/js/jquery.min.js' %}"></script>
 <script src="{% static 'app/js/jquery.dropotron.min.js' %}"></script>
